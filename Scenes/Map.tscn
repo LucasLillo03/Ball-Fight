@@ -215,7 +215,9 @@ tile_map_data = PackedByteArray("AAAZAAwAAAADAAMAAAAZAA0AAAADAAMAAAAZAA4AAAADAAM
 tile_set = SubResource("TileSet_qumfl")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(171, 106)
 anchor_mode = 0
+zoom = Vector2(1.5, 1.5)
 
 [node name="SpawnA" type="Marker2D" parent="."]
 position = Vector2(455, 232)

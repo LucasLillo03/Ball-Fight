@@ -8,6 +8,7 @@ extends Ball
 const BOOST_FACTOR: float = 1.15   
 const MAX_SPEED: float = 600.0   
 const DAMAGE := 1
+const COLOR := Color.DARK_MAGENTA
 const cloneScene := preload("res://Scenes/Balls/DuplicatorClone.tscn")
 
 var clones : Array
@@ -15,7 +16,7 @@ var clones : Array
 func _init() -> void:
 	take_damage_behavior = ExclusiveTakeDamage.new(clones)
 	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, MAX_SPEED)
-	color = Color.DARK_MAGENTA
+	color = COLOR
 	damage = DAMAGE
 
 func _ready() -> void:
@@ -30,9 +31,9 @@ func _physics_process(delta: float) -> void:
 
 func game_over() -> void:
 	super.game_over()
-	ray.enabled = false
+	timer.stop()
 	for clone in clones: 
-		clone.game_over()
+		if clone: clone.game_over()
 
 func _on_timer_timeout() -> void:
 	spawn_clone()

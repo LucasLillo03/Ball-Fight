@@ -9,6 +9,7 @@ class_name Ball
 
 @onready var poly: Polygon2D = $Polygon2D
 @onready var col: CollisionShape2D = $CollisionShape2D
+@onready var sound : AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var take_damage_behavior : TakeDamageBehavior
 var clamp_speed_behavior : ClampSpeedBehavior
@@ -43,6 +44,8 @@ func is_dead() -> bool:
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("harmful"):
 		take_damage_behavior.take_damage(body, self)
+	else: 
+		sound.play()
 	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)
 
 func get_damage() -> int: 

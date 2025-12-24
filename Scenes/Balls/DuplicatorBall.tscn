@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://fe3v1prm8yjm"]
+[gd_scene load_steps=9 format=3 uid="uid://fe3v1prm8yjm"]
 
 [ext_resource type="Script" uid="uid://dbr86yi0qvrar" path="res://Scripts/Model/ball/duplicator_ball.gd" id="1_cgja3"]
 [ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_8xb6q"]
 [ext_resource type="Texture2D" uid="uid://cuui00rnc235u" path="res://Assets/Images/crown.png" id="2_obvii"]
+[ext_resource type="AudioStream" uid="uid://c7pbiuksqe0s6" path="res://Assets/Sounds/ball_sound.wav" id="4_obvii"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eb1ap"]
 friction = 0.0
@@ -57,5 +58,8 @@ autostart = true
 
 [node name="CloneSpawnRay" type="RayCast2D" parent="."]
 target_position = Vector2(0, 25)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_obvii")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
