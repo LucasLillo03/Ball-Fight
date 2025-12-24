@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://vitcubo87hjj"]
+
+[ext_resource type="Script" uid="uid://cuhjtfldc0wjb" path="res://Scripts/critical_ball.gd" id="2_errcd"]
+[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/text_container.gd" id="2_g4rwu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3s86b"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_vn2yj"]
+texture_filter = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_f5u5j"]
+font_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
+
+[node name="CriticalBall" type="RigidBody2D" groups=["ball", "harmful"]]
+script = ExtResource("2_errcd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3s86b")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 1, 1, 1)
+texture = SubResource("CanvasTexture_vn2yj")
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[node name="TextContainer" type="Node2D" parent="."]
+script = ExtResource("2_g4rwu")
+
+[node name="Label" type="Label" parent="TextContainer"]
+texture_filter = 2
+offset_left = -14.0
+offset_top = -13.0
+offset_right = 14.0
+offset_bottom = 10.0
+label_settings = SubResource("LabelSettings_f5u5j")
+horizontal_alignment = 1
+vertical_alignment = 1
+text_direction = 1
+metadata/_edit_use_anchors_ = true

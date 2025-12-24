@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://daey080330kea"]
+
+[ext_resource type="Script" uid="uid://d0lswyhko4cf5" path="res://Scripts/main_menu.gd" id="1_tt5f1"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tt5f1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 105.0
+offset_right = 717.0
+offset_bottom = 535.0
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "PLAY"
+
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
