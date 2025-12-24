@@ -16,17 +16,23 @@ var scenery : Map
 
 	
 func _ready() -> void:
+	initialization()
+
+func initialization() -> void:
 	_update_visual()
 	_update_collision()
 	contact_monitor = true
 	max_contacts_reported = 8
 	body_entered.connect(_on_body_entered)
-
+	
 func _process(delta: float) -> void:
 	if is_dead(): 
-		scenery.ball_dead(self)
-		queue_free()
-	
+		die()
+
+func die():
+	scenery.ball_dead(self)
+	queue_free()
+
 func game_over() -> void:
 	gravity_scale = 0.0
 	linear_velocity = Vector2(0,0)
@@ -36,9 +42,9 @@ func is_dead() -> bool:
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("harmful"):
-		take_damage_behavior.take_damage(body.get_damage(), self)
+		take_damage_behavior.take_damage(body, self)
 	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)
-	
+
 func get_damage() -> int: 
 	return damage
 

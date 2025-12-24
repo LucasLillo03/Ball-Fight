@@ -12,5 +12,5 @@ func _init() -> void:
 	damage = DAMAGE
 
 func get_damage(): 
-	var critical_damage = damage * randi() % 4 
+	var critical_damage = damage * randi() % 10 
 	return critical_damage

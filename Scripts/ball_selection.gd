@@ -4,10 +4,6 @@ extends Control
 @onready var grid = $VBoxContainer/GridContainer
 @onready var title = $VBoxContainer/Label
 
-var balls := {
-	DefaultBall : "Deafult ball",
-	CriticalBall : "Critical ball"
-}
 var state_machine : SelectorStateMachine
 var ballA : Ball
 var ballB: Ball
@@ -18,12 +14,12 @@ func _ready() -> void:
 	state_machine = SelectorStateMachine.new(self)
 	ball_factory = BallFactory.new()
 	
-	for ball in balls:
+	for ball in BallContext.balls:
 		var button = Button.new()
 		var button_call = func(): 
 			selected_ball = ball.new()
 
-		button.text = balls.get(ball)
+		button.text = BallContext.get_ball_name(ball)
 		button.toggle_mode = true
 		button.pressed.connect(button_call)
 		

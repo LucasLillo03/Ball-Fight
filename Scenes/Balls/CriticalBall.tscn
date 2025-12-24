@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://vitcubo87hjj"]
 
-[ext_resource type="Script" uid="uid://cuhjtfldc0wjb" path="res://Scripts/critical_ball.gd" id="2_errcd"]
-[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/text_container.gd" id="2_g4rwu"]
+[ext_resource type="Script" uid="uid://cuhjtfldc0wjb" path="res://Scripts/Model/ball/critical_ball.gd" id="1_8jy72"]
+[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_eisc4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3s86b"]
 
@@ -12,7 +12,7 @@ texture_filter = 1
 font_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
 
 [node name="CriticalBall" type="RigidBody2D" groups=["ball", "harmful"]]
-script = ExtResource("2_errcd")
+script = ExtResource("1_8jy72")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_3s86b")
@@ -23,7 +23,7 @@ texture = SubResource("CanvasTexture_vn2yj")
 polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [node name="TextContainer" type="Node2D" parent="."]
-script = ExtResource("2_g4rwu")
+script = ExtResource("2_eisc4")
 
 [node name="Label" type="Label" parent="TextContainer"]
 texture_filter = 2
