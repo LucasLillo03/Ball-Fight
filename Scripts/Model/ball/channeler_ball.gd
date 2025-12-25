@@ -1,12 +1,14 @@
 class_name ChannelerBall
 extends Ball
 
-@export var boost_damage_factor := 2.0
+@export var boost_damage_factor := 2
 
 @onready var shield_timer = $ShieldTimer
 @onready var shield_collision = $ShieldArea/ShieldCollision
 
 var shield_active = false
+var _save_linear_veloccity : Vector2
+var _save_angular_veloccity : float
 
 const BOOST_FACTOR: float = 1.15   
 const MAX_SPEED: float = 600.0   
@@ -14,9 +16,8 @@ const COLOR := Color.ORANGE
 const SHIELD_COLOR := Color.DARK_ORANGE
 const DAMAGE := 1
 const SHIELD_VALUE := 1
+const BALL_NAME := "CHANNELER" 
 
-var _save_linear_veloccity : Vector2
-var _save_angular_veloccity : float
 
 func _init() -> void:
 	take_damage_behavior = DefaultTakeDamageBehavior.new()
@@ -32,7 +33,8 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("harmful"):
 		var mitigated_damage = take_damage_behavior.take_damage(body, self)
 		if shield_active: 
-			self.damage += mitigated_damage
+			damage += round(mitigated_damage * boost_damage_factor)
+
 	else: 
 		if !shield_active: bound_sound_player.play()
 	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)
@@ -40,11 +42,11 @@ func _on_body_entered(body: Node) -> void:
 func get_damage() -> int:
 	if shield_active: return 0
 	
-	var total_damage = damage if damage == DAMAGE else round(damage * boost_damage_factor)
+	var current_damage = damage
 	
 	damage = DAMAGE
 	
-	return total_damage
+	return current_damage
 	
 
 func _active_shield() -> void:
@@ -63,7 +65,7 @@ func _active_shield() -> void:
 	_update_visual()
 
 func _desactive_shield() -> void:
-	boost_damage_factor += 0.5
+	boost_damage_factor += 1
 	
 	shield_collision.disabled = true 
 	
@@ -87,3 +89,12 @@ func _on_shield_timer_timeout() -> void:
 func _on_shield_area_body_entered(body: Node2D) -> void:
 	if body == self: return 
 	_on_body_entered(body)
+
+func get_ball_name() -> String: 
+	return BALL_NAME
+
+func get_properties() -> String: 
+	var shield_time = shield_timer.time_left if !shield_active else 0.00
+	var result := "Shield Timer: "+ String.num(shield_time, 2) +"\nAcumulated Damage: " + str(damage) + "\nMultiplier: " + str(boost_damage_factor)
+	
+	return result

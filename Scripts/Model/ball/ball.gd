@@ -16,7 +16,6 @@ var clamp_speed_behavior : ClampSpeedBehavior
 var scenery : Map
 
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
-
 	
 func _ready() -> void:
 	add_child(bound_sound_player)
@@ -62,6 +61,12 @@ func _on_body_entered(body: Node) -> void:
 
 func get_damage() -> int: 
 	return damage
+
+func get_ball_name() -> String: 
+	return "Ball"
+
+func get_properties() -> String:
+	return "this ball hasn't properties"
 
 #region set form
 func _update_visual() -> void:

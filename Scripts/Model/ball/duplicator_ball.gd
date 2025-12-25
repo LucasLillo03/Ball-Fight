@@ -9,7 +9,8 @@ const BOOST_FACTOR: float = 1.15
 const MAX_SPEED: float = 600.0   
 const DAMAGE := 1
 const COLOR := Color.DARK_MAGENTA
-const cloneScene := preload("res://Scenes/Balls/DuplicatorClone.tscn")
+const CLONE_SCENE := preload("res://Scenes/Balls/DuplicatorClone.tscn")
+const BALL_NAME := "DUPLICATOR"
 
 var clones : Array
 
@@ -40,7 +41,7 @@ func _on_timer_timeout() -> void:
 
 func spawn_clone():
 	if !ray.is_colliding():
-		var clone = cloneScene.instantiate()
+		var clone = CLONE_SCENE.instantiate()
 		clone.setup(self)
 		clones.append(clone)
 		
@@ -51,3 +52,11 @@ func spawn_clone():
 		
 		var dir = (spawn_pos - global_position).normalized()
 		clone.linear_velocity = dir * 500.0
+
+func get_ball_name() -> String: 
+	return BALL_NAME
+
+func get_properties() -> String: 
+	var result := "Clones: " + str(clones.size())
+	
+	return result
