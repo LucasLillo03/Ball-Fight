@@ -19,5 +19,5 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("harmful") && body != parent:
 		take_damage_behavior.take_damage(body, self)
 	else: 
-		sound.play()
+		bound_sound_player.play()
 	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)

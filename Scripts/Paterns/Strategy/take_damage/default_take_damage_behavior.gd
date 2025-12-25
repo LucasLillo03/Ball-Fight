@@ -1,5 +1,9 @@
 class_name DefaultTakeDamageBehavior
 extends TakeDamageBehavior
 
-func take_damage(bodyEntered : Node, receptorBody : Node) -> void: 
-	receptorBody.life -= bodyEntered.get_damage()
+func take_damage(bodyEntered : Node, receptorBody : Node) -> int:
+	var damage = bodyEntered.get_damage() 
+	
+	receptorBody.life -= damage
+	
+	return damage

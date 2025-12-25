@@ -19,8 +19,7 @@ func _init() -> void:
 	color = COLOR
 	damage = DAMAGE
 
-func _ready() -> void:
-	initialization()
+func _on_ready() -> void:
 	ray.target_position = Vector2(0.0, 50.0)
 	
 
