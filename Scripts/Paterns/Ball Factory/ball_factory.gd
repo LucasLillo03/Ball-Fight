@@ -9,4 +9,6 @@ func create(ball: Ball) -> PackedScene:
 		return preload("res://Scenes/Balls/DuplicatorBall.tscn")
 	if ball is ChannelerBall:
 		return preload("res://Scenes/Balls/ChannelerBall.tscn")
+	if ball is StinkyBall:
+		return preload("res://Scenes/Balls/StinkyBall.tscn")
 	return null
