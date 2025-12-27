@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c73su0qqvgjj"]
 
-[ext_resource type="Script" uid="uid://dhkjb6al2yahl" path="res://Scripts/Model/ball/duplicator_clone.gd" id="1_6wicv"]
-[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_ng2xn"]
+[ext_resource type="Script" uid="uid://dhkjb6al2yahl" path="res://Scripts/Model/Ball/Complements/duplicator_clone.gd" id="1_tjtrm"]
+[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_rwid4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eb1ap"]
 friction = 0.0
@@ -19,7 +19,7 @@ font_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
 physics_material_override = SubResource("PhysicsMaterial_eb1ap")
 can_sleep = false
 continuous_cd = 2
-script = ExtResource("1_6wicv")
+script = ExtResource("1_tjtrm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_27lt3")
@@ -30,7 +30,7 @@ texture = SubResource("CanvasTexture_3dh43")
 polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [node name="TextContainer" type="Node2D" parent="."]
-script = ExtResource("2_ng2xn")
+script = ExtResource("2_rwid4")
 
 [node name="Label" type="Label" parent="TextContainer"]
 texture_filter = 2

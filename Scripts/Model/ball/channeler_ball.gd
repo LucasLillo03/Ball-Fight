@@ -61,7 +61,7 @@ func _active_shield() -> void:
 	
 	take_damage_behavior = ShieldTakeDamage.new(SHIELD_VALUE)
 	clamp_speed_behavior = StaticClampSpeed.new()
-	color = SHIELD_COLOR
+	set_color(SHIELD_COLOR)
 	_update_visual()
 
 func _desactive_shield() -> void:
@@ -75,7 +75,7 @@ func _desactive_shield() -> void:
 	
 	take_damage_behavior = DefaultTakeDamageBehavior.new()
 	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, MAX_SPEED)
-	color = COLOR
+	set_color(COLOR)
 	_update_visual()
 
 func _on_shield_timer_timeout() -> void:

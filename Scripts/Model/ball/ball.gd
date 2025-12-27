@@ -22,6 +22,7 @@ func _ready() -> void:
 	bound_sound_player.stream = BOUND_SOUND
 	initialization()
 	_on_ready()
+	z_index = 1
 
 func _on_ready() -> void:
 	pass
@@ -58,6 +59,9 @@ func _on_body_entered(body: Node) -> void:
 	else: 
 		bound_sound_player.play()
 	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)
+
+func area_entered(area : Node) -> void: 
+	_on_body_entered(area)
 
 func get_damage() -> int: 
 	return damage

@@ -214,6 +214,7 @@ font_size = 26
 font_size = 26
 
 [node name="Map" type="Node2D"]
+z_index = -1
 script = ExtResource("1_7yn8b")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]

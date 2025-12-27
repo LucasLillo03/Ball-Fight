@@ -9,7 +9,7 @@ const BOOST_FACTOR: float = 1.15
 const MAX_SPEED: float = 600.0   
 const DAMAGE := 1
 const COLOR := Color.DARK_MAGENTA
-const CLONE_SCENE := preload("res://Scenes/Balls/DuplicatorClone.tscn")
+const CLONE_SCENE := preload("res://Scenes/Balls/Complements/DuplicatorClone.tscn")
 const BALL_NAME := "DUPLICATOR"
 
 var clones : Array

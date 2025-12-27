@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dss3og5umq2ih"]
+[gd_scene load_steps=7 format=3 uid="uid://do6g7m4t0av6u"]
 
-[ext_resource type="Script" uid="uid://chp1ornogw01a" path="res://Scripts/Model/Ball/default_ball.gd" id="1_qwch3"]
-[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_8of01"]
+[ext_resource type="Script" uid="uid://ufeyy84164" path="res://Scripts/Model/Ball/stinky_ball.gd" id="1_jucth"]
+[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_jv4nx"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eb1ap"]
 friction = 0.0
@@ -15,11 +15,11 @@ texture_filter = 1
 [sub_resource type="LabelSettings" id="LabelSettings_7nh6h"]
 font_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
 
-[node name="DefaultBall" type="RigidBody2D" groups=["ball", "harmful"]]
+[node name="StinkyBall" type="RigidBody2D" groups=["ball", "harmful"]]
 physics_material_override = SubResource("PhysicsMaterial_eb1ap")
 can_sleep = false
 continuous_cd = 2
-script = ExtResource("1_qwch3")
+script = ExtResource("1_jucth")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_27lt3")
@@ -30,7 +30,7 @@ texture = SubResource("CanvasTexture_3dh43")
 polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [node name="TextContainer" type="Node2D" parent="."]
-script = ExtResource("2_8of01")
+script = ExtResource("2_jv4nx")
 
 [node name="Label" type="Label" parent="TextContainer"]
 texture_filter = 2
@@ -43,3 +43,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 text_direction = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="TraceTimer" type="Timer" parent="."]
+wait_time = 0.05
+autostart = true
+
+[node name="HitTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="TraceTimer" to="." method="_on_trace_timer_timeout"]
+[connection signal="timeout" from="HitTimer" to="." method="_on_hit_timer_timeout"]
