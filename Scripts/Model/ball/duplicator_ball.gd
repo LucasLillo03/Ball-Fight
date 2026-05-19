@@ -15,7 +15,6 @@ const BALL_NAME := "DUPLICATOR"
 var clones : Array
 
 func _init() -> void:
-	take_damage_behavior = ExclusiveTakeDamage.new(clones)
 	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, MAX_SPEED)
 	color = COLOR
 	damage = DAMAGE

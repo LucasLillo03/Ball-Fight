@@ -16,7 +16,6 @@ var trace_damage : float = 1.0
 var trace_collision : bool = true 
 
 func _init() -> void:
-	take_damage_behavior = DefaultTakeDamageBehavior.new()
 	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, MAX_SPEED)
 	color = COLOR
 	damage = DAMAGE

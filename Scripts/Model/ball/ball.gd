@@ -8,40 +8,49 @@ class_name Ball
 @export var damage: int
 
 @onready var poly: Polygon2D = $Polygon2D
-@onready var col: CollisionShape2D = $CollisionShape2D
+@onready var collision: CollisionShape2D = $CollisionShape2D
 
 var bound_sound_player : AudioStreamPlayer2D = AudioStreamPlayer2D.new()
-var take_damage_behavior : TakeDamageBehavior
+
 var clamp_speed_behavior : ClampSpeedBehavior
+var abilities : Array[Ability]
 var scenery : Map
 
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
-	
+
+#set the attributes of a new ball
+func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
+	self.color = color
+	self.radius = radius
+	self.damage = damage
+	self.life = life
+	self.clamp_speed_behavior = clamp_speed
+
 func _ready() -> void:
 	add_child(bound_sound_player)
 	bound_sound_player.stream = BOUND_SOUND
+	
 	initialization()
-	_on_ready()
+	
+	for ability in abilities: 
+		ability.on_ready()
+	
 	z_index = 1
 
-func _on_ready() -> void:
-	pass
-
+#initialize characteristics 
 func initialization() -> void:
-	_update_visual()
+	update_visual()
+	
 	_update_collision()
 	contact_monitor = true
 	max_contacts_reported = 8
 	body_entered.connect(_on_body_entered)
-	
+
+##TODO remake this from here 
 func _process(delta: float) -> void:
 	if is_dead(): 
 		die()
-	_on_process(delta)
-		
-func _on_process(delta : float) -> void: 
-	pass
-	
+
 func die():
 	scenery.ball_dead(self)
 	queue_free()
@@ -52,19 +61,34 @@ func game_over() -> void:
 
 func is_dead() -> bool: 
 	return life <= 0
+##to here 
 
 func _on_body_entered(body: Node) -> void:
-	if body.is_in_group("harmful"):
-		take_damage_behavior.take_damage(body, self)
+	if body.is_in_group("ball"):
+		var ball : Ball = body
+		
+		var damage_context = DamageContext.new()
+		damage_context.amount = ball.get_damage()
+		
+		take_damage(damage_context)
 	else: 
 		bound_sound_player.play()
 	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)
 
-func area_entered(area : Node) -> void: 
-	_on_body_entered(area)
+func take_damage(ctx : DamageContext):
+	for ability in abilities:
+		ability.on_take_damage(ctx)
+		
+		if ctx.cancelled: return 
+	
+	life -= ctx.amount
 
 func get_damage() -> int: 
-	return damage
+	var amount := damage
+	for ability in abilities:
+		amount = ability.get_damage(damage) 
+	
+	return amount
 
 func get_ball_name() -> String: 
 	return "Ball"
@@ -73,7 +97,7 @@ func get_properties() -> String:
 	return "this ball hasn't properties"
 
 #region set form
-func _update_visual() -> void:
+func update_visual() -> void:
 	var pts: PackedVector2Array = PackedVector2Array()
 	for i in range(segments):
 		var a := TAU * float(i) / float(segments)
@@ -84,7 +108,7 @@ func _update_visual() -> void:
 func _update_collision() -> void:
 	var shape := CircleShape2D.new()
 	shape.radius = radius
-	col.shape = shape
+	collision.shape = shape
 
 func set_color(new_color: Color) -> void:
 	color = new_color

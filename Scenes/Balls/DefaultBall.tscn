@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dss3og5umq2ih"]
 
-[ext_resource type="Script" uid="uid://chp1ornogw01a" path="res://Scripts/Model/Ball/default_ball.gd" id="1_qwch3"]
+[ext_resource type="Script" uid="uid://chp1ornogw01a" path="res://Scripts/Model/ball/default_ball.gd" id="1_qwch3"]
 [ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_8of01"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eb1ap"]

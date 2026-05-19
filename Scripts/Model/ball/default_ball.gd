@@ -8,7 +8,6 @@ const DAMAGE := 1
 const BALL_NAME = "DEFAULT"
 
 func _init() -> void:
-	take_damage_behavior = DefaultTakeDamageBehavior.new()
 	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, MAX_SPEED)
 	color = COLOR
 	damage = DAMAGE

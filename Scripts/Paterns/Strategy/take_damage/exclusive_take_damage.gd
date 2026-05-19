@@ -1,6 +1,8 @@
 class_name ExclusiveTakeDamage
 extends TakeDamageBehavior
 
+##excluye determinados objetos al recibir daño 
+
 var exclusives : Array = []
 
 func _init(exclusives : Array) -> void:

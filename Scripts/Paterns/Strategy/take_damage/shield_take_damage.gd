@@ -1,6 +1,7 @@
 class_name ShieldTakeDamage
 extends TakeDamageBehavior
 
+## toma damage ignorando el total de shield 
 var shield : int 
 var last_damage : int 
 
