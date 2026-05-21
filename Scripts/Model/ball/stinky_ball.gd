@@ -4,7 +4,6 @@ extends Ball
 @onready var trace_timer = $TraceTimer
 @onready var hit_timer = $HitTimer
 
-const BOOST_FACTOR: float = 1.15   
 const MAX_SPEED: float = 800.0   
 const COLOR := Color.FOREST_GREEN
 const DAMAGE := 1

@@ -20,8 +20,8 @@ func _process(delta: float) -> void:
 	if ballA: ballA_properties.text = ballA.get_properties()
 	if ballB: ballB_properties.text = ballB.get_properties()
 	
-func spawn_ballA(scene : PackedScene) -> void: 	
-	ballA = scene.instantiate()
+func spawn_ballA(ball : Ball) -> void: 	
+	ballA = ball
 	
 	add_child(ballA)
 	ballA.global_position = spawnA.global_position
@@ -31,8 +31,8 @@ func spawn_ballA(scene : PackedScene) -> void:
 	
 	ballA_name.text = ballA.get_ball_name()
 	
-func spawn_ballB(scene : PackedScene) -> void: 
-	ballB = scene.instantiate()
+func spawn_ballB(ball : Ball) -> void: 
+	ballB = ball
 	
 	add_child(ballB)
 	ballB.global_position = spawnB.global_position

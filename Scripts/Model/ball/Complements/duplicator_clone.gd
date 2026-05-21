@@ -7,7 +7,7 @@ func setup(parent : DuplicatorBall) -> void:
 	self.parent = parent
 
 
-	clamp_speed_behavior = AcceleratedAndLimited.new(parent.BOOST_FACTOR, parent.MAX_SPEED)
+	clamp_speed_behavior = AcceleratedAndLimited.new(parent.BOOST_FACTOR, parent.max_speed)
 	color = parent.color
 	damage = parent.DAMAGE
 

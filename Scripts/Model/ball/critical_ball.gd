@@ -1,7 +1,6 @@
 class_name CriticalBall
 extends Ball
 
-const BOOST_FACTOR: float = 1.15   
 const MAX_SPEED: float = 600.0  
 const COLOR := Color.CRIMSON
 const DAMAGE := 1

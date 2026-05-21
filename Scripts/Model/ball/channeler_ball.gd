@@ -1,16 +1,16 @@
 class_name ChannelerBall
 extends Ball
-
-const BOOST_FACTOR: float = 1.15   
-const MAX_SPEED: float = 600.0   
-const COLOR := Color.ORANGE
-const DAMAGE := 1
+  
+const NAME := "CHANNELER"
 
 func _init() -> void:
-	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, MAX_SPEED)
+	ball_name = NAME
+	
+	rand_stats()
+	
+	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, max_speed)
+	
 	abilities.append(Invulnerability.new())
-	color = COLOR
-	damage = DAMAGE
 	
 	for ability in abilities:
 		ability.setup(self)

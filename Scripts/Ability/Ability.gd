@@ -1,8 +1,9 @@
 class_name Ability
-extends Resource
+extends RefCounted
 
 var requires_update := false 
 var ball : Node 
+var ability_name := "No name"
 
 func setup(ball) -> void: 
 	self.ball = ball
@@ -24,3 +25,6 @@ func get_damage(damage):
 
 func on_death():
 	pass
+
+func get_property() -> String: 
+	return "No property"

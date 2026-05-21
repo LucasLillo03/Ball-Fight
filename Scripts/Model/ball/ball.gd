@@ -6,17 +6,24 @@ class_name Ball
 @export var color: Color
 @export var life: int = 100
 @export var damage: int
+@export var ball_name := "SIMPLE BALL"
+@export var max_speed : float
 
 @onready var poly: Polygon2D = $Polygon2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
+@onready var icon_manager := $IconManager
 
 var bound_sound_player : AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
 var clamp_speed_behavior : ClampSpeedBehavior
 var abilities : Array[Ability]
+var updating_abilities : Array[Ability]
 var scenery : Map
 
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
+const BOOST_FACTOR := 1.15 
+
+signal radius_changed
 
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
@@ -25,6 +32,22 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 	self.damage = damage
 	self.life = life
 	self.clamp_speed_behavior = clamp_speed
+
+func rand_stats() -> void:
+	randomize()
+	radius = randf_range(20.0, 50.0)
+	damage = randi_range(1, 10)
+	life = randi_range(50, 300)
+	max_speed = randf_range(500.0, 1000.0)
+	color = Color(randf(),randf(),randf())
+
+func add_ability(ability : Ability):
+	abilities.append(ability)
+	
+	ability.setup(self)
+	
+	if ability.requires_update:
+		updating_abilities.append(ability)
 
 func _ready() -> void:
 	add_child(bound_sound_player)
@@ -91,10 +114,18 @@ func get_damage() -> int:
 	return amount
 
 func get_ball_name() -> String: 
-	return "Ball"
+	return ball_name
 
 func get_properties() -> String:
-	return "this ball hasn't properties"
+	return str("Life: " , max(0, life), "\nDamage: ", damage, "\nMax speed: ", snapped(max_speed,0.01)) + abilities_properties()
+
+func abilities_properties() -> String: 
+	var result := ""
+	
+	for ability in abilities: 
+		result = result + "\n" + ability.get_property()
+	
+	return result
 
 #region set form
 func update_visual() -> void:

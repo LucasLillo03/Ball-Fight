@@ -5,7 +5,6 @@ extends Ball
 @onready var timer = $Timer
 @onready var crown = $Crown
 
-const BOOST_FACTOR: float = 1.15   
 const MAX_SPEED: float = 600.0   
 const DAMAGE := 1
 const COLOR := Color.DARK_MAGENTA

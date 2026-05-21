@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BallConfig" load_steps=2 format=3 uid="uid://bk5hwr1xq5lqm"]
+
+[ext_resource type="Script" uid="uid://cb4by8303pu8o" path="res://Scripts/Balls Configurations/ball_config.gd" id="1_56l2o"]
+
+[resource]
+script = ExtResource("1_56l2o")
+metadata/_custom_type_script = "uid://cb4by8303pu8o"
