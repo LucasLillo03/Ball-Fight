@@ -14,7 +14,7 @@ func _ready() -> void:
 
 	ball.radius_changed.connect(update_icon_scale)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 
 	if keep_global_horizontal:
 		global_rotation = 0.0

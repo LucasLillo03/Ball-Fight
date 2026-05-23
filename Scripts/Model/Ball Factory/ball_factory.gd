@@ -25,6 +25,8 @@ func setup_channeler(ball : Ball):
 	ball.clamp_speed_behavior = AcceleratedAndLimited.new(ball.BOOST_FACTOR, ball.max_speed)
 
 	ball.add_ability(Invulnerability.new())
+	ball.add_ability(DamageAccumulator.new())
+	ball.add_ability(IntermittentFrozen.new())
 
 func create_from_config(config : BallConfig) -> Ball:
 

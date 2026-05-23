@@ -1,10 +1,16 @@
 class_name DefaultBall
 extends Ball
-
-const BALL_NAME = "DEFAULT"
+  
+const NAME := "CHANNELER"
 
 func _init() -> void:
+	ball_name = NAME
+	
 	rand_stats()
-	ball_name = BALL_NAME
 	
 	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, max_speed)
+	
+	abilities.append(Invulnerability.new())
+	
+	for ability in abilities:
+		ability.setup(self)

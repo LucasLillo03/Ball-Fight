@@ -14,14 +14,20 @@ func on_ready() -> void:
 func on_update(delta):
 	pass
 
+func pre_take_damage(damage_context : DamageContext) -> void: 
+	pass 
+
 func on_take_damage(damage_context : DamageContext) -> int:
 	return damage_context.amount
+
+func post_take_damage(damage_context : DamageContext) -> void:
+	pass
 
 func on_attack(target):
 	pass
 
-func get_damage(damage):
-	return damage
+func get_damage(damage_context : DamageContext) -> int:
+	return damage_context.amount
 
 func on_death():
 	pass

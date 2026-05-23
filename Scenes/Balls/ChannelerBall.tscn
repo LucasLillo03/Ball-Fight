@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c6nu3x7jokogq"]
 
-[ext_resource type="Script" uid="uid://b7hj1hm7g6cx2" path="res://Scripts/Model/ball/channeler_ball.gd" id="1_mo4k0"]
-[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_lhymk"]
+[ext_resource type="Script" uid="uid://b7hj1hm7g6cx2" path="res://Scripts/Model/Ball/channeler_ball.gd" id="1_mo4k0"]
+[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/Ball/Resources/text_container.gd" id="2_lhymk"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eb1ap"]
 friction = 0.0

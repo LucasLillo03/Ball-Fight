@@ -1,5 +1,5 @@
-extends RigidBody2D
 class_name Ball
+extends RigidBody2D
 
 @export var radius: float = 32.0
 @export_range(8, 128, 1) var segments: int = 32
@@ -20,10 +20,21 @@ var abilities : Array[Ability]
 var updating_abilities : Array[Ability]
 var scenery : Map
 
+var movement_locked := false 
+var gravity_locked := false
+
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
-const BOOST_FACTOR := 1.15 
+const BOOST_FACTOR := 1.50 
+const DEFAULT_MAX_SPEED := 800.0
 
 signal radius_changed
+signal damage_blocked
+
+func _init() -> void:
+	#DEFAULT
+	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, DEFAULT_MAX_SPEED) 
+	damage = 1
+	color = Color.BLUE
 
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
@@ -60,6 +71,8 @@ func _ready() -> void:
 	
 	z_index = 1
 
+
+
 #initialize characteristics 
 func initialization() -> void:
 	update_visual()
@@ -68,7 +81,18 @@ func initialization() -> void:
 	contact_monitor = true
 	max_contacts_reported = 8
 	body_entered.connect(_on_body_entered)
+	
+func _physics_process(delta: float) -> void:
+	for ability in updating_abilities:
+		ability.on_update(delta)
+	
+	if movement_locked:
+		linear_velocity = Vector2.ZERO
+		angular_velocity = 0.0
 
+	if gravity_locked:
+		apply_central_force(-get_gravity() * mass)
+		
 ##TODO remake this from here 
 func _process(delta: float) -> void:
 	if is_dead(): 
@@ -79,8 +103,7 @@ func die():
 	queue_free()
 
 func game_over() -> void:
-	gravity_scale = 0.0
-	linear_velocity = Vector2(0,0)
+	freeze = true 
 
 func is_dead() -> bool: 
 	return life <= 0
@@ -96,21 +119,33 @@ func _on_body_entered(body: Node) -> void:
 		take_damage(damage_context)
 	else: 
 		bound_sound_player.play()
-	linear_velocity = clamp_speed_behavior.clamp_speed(linear_velocity)
+	linear_velocity = Vector2.ZERO if movement_locked else clamp_speed_behavior.clamp_speed(linear_velocity)
 
-func take_damage(ctx : DamageContext):
+func take_damage(damage_context : DamageContext):
 	for ability in abilities:
-		ability.on_take_damage(ctx)
+		ability.pre_take_damage(damage_context)
 		
-		if ctx.cancelled: return 
+	for ability in abilities:
+		ability.on_take_damage(damage_context)
+		
+		if damage_context.cancelled: return 
 	
-	life -= ctx.amount
+	for ability in abilities:
+		ability.post_take_damage(damage_context)
+	
+	life -= damage_context.amount
 
 func get_damage() -> int: 
 	var amount := damage
-	for ability in abilities:
-		amount = ability.get_damage(damage) 
+	var damage_context = DamageContext.new()
 	
+	damage_context.amount = amount
+	
+	for ability in abilities:
+		amount = ability.get_damage(damage_context) 
+		
+		if damage_context.cancelled: return 0
+		
 	return amount
 
 func get_ball_name() -> String: 

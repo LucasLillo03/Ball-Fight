@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://danx8i8to2b7f"]
 
-[ext_resource type="Script" uid="uid://4emrd506leyq" path="res://Scripts/Model/ball/ball.gd" id="1_ovqem"]
-[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/text_container.gd" id="2_e8ycj"]
-[ext_resource type="Script" uid="uid://dn7m033b00hoe" path="res://Scripts/Model/ball/Resources/icon_manager.gd" id="3_u70l3"]
+[ext_resource type="Script" uid="uid://4emrd506leyq" path="res://Scripts/Model/Ball/ball.gd" id="1_ovqem"]
+[ext_resource type="Script" uid="uid://cw3ory6f824pq" path="res://Scripts/Model/Ball/Resources/text_container.gd" id="2_e8ycj"]
+[ext_resource type="Script" uid="uid://dn7m033b00hoe" path="res://Scripts/Model/Ball/Resources/icon_manager.gd" id="3_u70l3"]
 [ext_resource type="Texture2D" uid="uid://jwmpksw6w2v2" path="res://Assets/Images/shield.png" id="4_orbtu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u70l3"]
