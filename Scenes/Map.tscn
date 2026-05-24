@@ -209,9 +209,13 @@ pattern_0 = SubResource("TileMapPattern_7yn8b")
 
 [sub_resource type="LabelSettings" id="LabelSettings_7yn8b"]
 font_size = 26
+outline_size = 2
+outline_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_etk83"]
 font_size = 26
+outline_size = 2
+outline_color = Color(0.0165517, 0.0165517, 0.0165517, 1)
 
 [node name="Map" type="Node2D"]
 z_index = -1

@@ -30,6 +30,7 @@ func spawn_ballA(ball : Ball) -> void:
 	balls.append(ballA)
 	
 	ballA_name.text = ballA.get_ball_name()
+	ballA_name.label_settings.font_color = ballA.color
 	
 func spawn_ballB(ball : Ball) -> void: 
 	ballB = ball
@@ -41,6 +42,7 @@ func spawn_ballB(ball : Ball) -> void:
 	balls.append(ballB)
 	
 	ballB_name.text = ballB.get_ball_name()
+	ballB_name.label_settings.font_color = ballB.color
 	
 func ball_dead(ball : Ball) -> void: 
 	balls.erase(ball)
