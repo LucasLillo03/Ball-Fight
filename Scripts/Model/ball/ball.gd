@@ -28,6 +28,7 @@ const BOOST_FACTOR := 1.50
 
 signal radius_changed
 signal damage_blocked
+signal i_die
 
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
@@ -40,8 +41,8 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 func rand_stats() -> void:
 	randomize()
 	radius = randf_range(20.0, 50.0)
-	damage = randi_range(1, 10)
-	life = randi_range(50, 300)
+	damage = randi_range(1, 20)
+	life = randi_range(50, 200)
 	max_speed = randf_range(500.0, 1000.0)
 	color = Color(randf(),randf(),randf())
 
@@ -86,21 +87,14 @@ func _physics_process(delta: float) -> void:
 	if gravity_locked:
 		apply_central_force(-get_gravity() * mass)
 		
-##TODO remake this from here 
+
 func _process(delta: float) -> void:
 	if is_dead(): 
-		die()
-
-func die():
-	scenery.ball_dead(self)
-	queue_free()
-
-func game_over() -> void:
-	freeze = true 
+		i_die.emit()
 
 func is_dead() -> bool: 
 	return life <= 0
-##to here 
+
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("ball"):

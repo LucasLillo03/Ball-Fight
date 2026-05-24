@@ -12,6 +12,8 @@ var ballA: Ball
 var ballB: Ball
 var balls: Array
 
+const LAUNCH_VELOCITY := 200
+
 func _ready() -> void:
 	spawn_ballA(GameState.ball_a_scene)
 	spawn_ballB(GameState.ball_b_scene)
@@ -21,12 +23,20 @@ func _process(delta: float) -> void:
 	if ballB: ballB_properties.text = ballB.get_properties()
 	
 func spawn_ballA(ball : Ball) -> void: 	
+		
 	ballA = ball
+	ballA.global_position = spawnA.global_position
+	ballA.linear_velocity = Vector2(LAUNCH_VELOCITY,LAUNCH_VELOCITY)
+	ballA.scenery = self
+	
+	var ball_dead = func():
+		ballA.queue_free()
+		_game_over()
+	
+	ballA.i_die.connect(ball_dead)	
 	
 	add_child(ballA)
-	ballA.global_position = spawnA.global_position
-	ballA.linear_velocity = Vector2(100,100)
-	ballA.scenery = self
+	
 	balls.append(ballA)
 	
 	ballA_name.text = ballA.get_ball_name()
@@ -35,19 +45,23 @@ func spawn_ballA(ball : Ball) -> void:
 func spawn_ballB(ball : Ball) -> void: 
 	ballB = ball
 	
-	add_child(ballB)
 	ballB.global_position = spawnB.global_position
-	ballB.linear_velocity = Vector2(-100,100)
+	ballB.linear_velocity = Vector2(-LAUNCH_VELOCITY,LAUNCH_VELOCITY)
 	ballB.scenery = self
+	
+	var ball_dead = func():
+		ballB.queue_free()
+		_game_over()
+	
+	ballB.i_die.connect(ball_dead)	
+	
+	add_child(ballB)
+	
 	balls.append(ballB)
 	
 	ballB_name.text = ballB.get_ball_name()
 	ballB_name.label_settings.font_color = ballB.color
 	
-func ball_dead(ball : Ball) -> void: 
-	balls.erase(ball)
-	_game_over()
-	
 func _game_over() -> void:
-	for ball in balls: 
-		ball.game_over()
+	for ball : Ball in balls: 
+		ball.freeze = true
