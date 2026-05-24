@@ -3,7 +3,7 @@ extends RefCounted
 
 var requires_update := false 
 var ball : Node 
-var ability_name := "No name"
+static var ability_name := "No name"
 
 func setup(ball) -> void: 
 	self.ball = ball
@@ -31,6 +31,9 @@ func get_damage(damage_context : DamageContext) -> int:
 
 func on_death():
 	pass
+
+static func get_ablity_name() -> String:
+	return ability_name
 
 func get_property() -> String: 
 	return "No property"

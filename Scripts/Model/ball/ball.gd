@@ -25,16 +25,9 @@ var gravity_locked := false
 
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
 const BOOST_FACTOR := 1.50 
-const DEFAULT_MAX_SPEED := 800.0
 
 signal radius_changed
 signal damage_blocked
-
-func _init() -> void:
-	#DEFAULT
-	clamp_speed_behavior = AcceleratedAndLimited.new(BOOST_FACTOR, DEFAULT_MAX_SPEED) 
-	damage = 1
-	color = Color.BLUE
 
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 

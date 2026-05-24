@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d16age5fdp2sy"]
 
-[ext_resource type="Script" uid="uid://b4v58a6don3uu" path="res://Scripts/ball_selection.gd" id="1_1un5k"]
+[ext_resource type="Script" uid="uid://b4v58a6don3uu" path="res://Scripts/Screens/Ball Selection/ball_selection.gd" id="1_1un5k"]
 
 [node name="BallSelection" type="Control"]
 layout_mode = 3

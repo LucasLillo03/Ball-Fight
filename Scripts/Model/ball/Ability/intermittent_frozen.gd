@@ -4,10 +4,12 @@ extends IntermittentAbility
 var _save_linear_veloccity : Vector2
 var _save_angular_veloccity : float
 
+func _init() -> void:
+	ability_name = "Intermittent frozen"
+	
 func on_ready() -> void: 
 	rand_times()
 	
-	ability_name = "Intermittent frozen"
 	
 	timer_initialization()
 

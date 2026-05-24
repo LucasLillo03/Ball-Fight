@@ -8,8 +8,10 @@ func setup(ball) -> void:
 	super(ball)
 	ball.damage_blocked.connect(_on_blocked_damage)
 	
-func on_ready() -> void: 
+func _init() -> void:
 	ability_name = "Damage Acumulator"
+	
+func on_ready() -> void: 
 	returned_percentage = randf_range(0.1, 1)
 
 func get_damage(daamge_context : DamageContext) -> int: 
