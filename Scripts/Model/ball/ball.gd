@@ -50,25 +50,28 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 func rand_stats() -> void:
 	randomize()
 	
+	radius = randf_range(20.0, 50.0)
+	
+	damage = randi_range(1, 20)
+	
+	color = Color(randf(),randf(),randf())
+	
+	_update_stats()
+
+func _update_stats():
 	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
 	var radius_to_percentage = func(x : float) -> float : return (1 + ((x-MIN_INITIAL_RADIUS) * 99) / (100 - MAX_INITIAL_RADIUS)) 
 	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)
 	var percentage_to_life = func(x : float) -> int: return floor(MIN_INITIAL_LIFE + ( (x-1) * (MAX_INITIAL_LIFE - MIN_INITIAL_LIFE) ) / 99)
 	#(1.0, 100.0) -> (MIN_INITIAL_VELOCITY, MAX_INITIAL_VELOCITY)
 	var percentage_to_speed = func(x : float) -> float: return (MIN_INITIAL_VELOCITY + ( (x-1) * (MAX_INITIAL_VELOCITY - MIN_INITIAL_VELOCITY) ) / 99)
-	
-	radius = randf_range(20.0, 50.0)
-	
+	 
 	var transformed_radius : float = radius_to_percentage.call(radius)
-	
-	damage = randi_range(1, 20)
 	
 	life = percentage_to_life.call(transformed_radius)
 	
 	max_speed = percentage_to_speed.call(transformed_radius)
 	
-	color = Color(randf(),randf(),randf())
-
 func add_ability(ability : Ability):
 	abilities.append(ability)
 	
@@ -87,8 +90,8 @@ func _ready() -> void:
 		ability.on_ready()
 	
 	z_index = 1
-
-
+	
+	_update_stats()
 
 #initialize characteristics 
 func initialization() -> void:
