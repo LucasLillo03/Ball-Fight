@@ -26,6 +26,15 @@ var gravity_locked := false
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
 const BOOST_FACTOR := 1.50 
 
+const MIN_INITIAL_RADIUS := 20.0
+const MAX_INITIAL_RADIUS := 50.0
+
+const MIN_INITIAL_LIFE := 50
+const MAX_INITIAL_LIFE := 500
+
+const MIN_INITIAL_VELOCITY := 500.0
+const MAX_INITIAL_VELOCITY := 1000.0
+
 signal radius_changed
 signal damage_blocked
 signal i_die
@@ -40,10 +49,24 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 
 func rand_stats() -> void:
 	randomize()
+	
+	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
+	var radius_to_percentage = func(x : float) -> float : return (1 + ((x-MIN_INITIAL_RADIUS) * 99) / (100 - MAX_INITIAL_RADIUS)) 
+	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)
+	var percentage_to_life = func(x : float) -> int: return floor(MIN_INITIAL_LIFE + ( (x-1) * (MAX_INITIAL_LIFE - MIN_INITIAL_LIFE) ) / 99)
+	#(1.0, 100.0) -> (MIN_INITIAL_VELOCITY, MAX_INITIAL_VELOCITY)
+	var percentage_to_speed = func(x : float) -> float: return (MIN_INITIAL_VELOCITY + ( (x-1) * (MAX_INITIAL_VELOCITY - MIN_INITIAL_VELOCITY) ) / 99)
+	
 	radius = randf_range(20.0, 50.0)
+	
+	var transformed_radius : float = radius_to_percentage.call(radius)
+	
 	damage = randi_range(1, 20)
-	life = randi_range(50, 200)
-	max_speed = randf_range(500.0, 1000.0)
+	
+	life = percentage_to_life.call(transformed_radius)
+	
+	max_speed = percentage_to_speed.call(transformed_radius)
+	
 	color = Color(randf(),randf(),randf())
 
 func add_ability(ability : Ability):
@@ -139,7 +162,7 @@ func get_ball_name() -> String:
 	return ball_name
 
 func get_properties() -> String:
-	return str("Life: " , max(0, life), "\nDamage: ", damage, "\nMax speed: ", snapped(max_speed,0.01)) + abilities_properties()
+	return str("Life: " , max(0, life), "\nDamage: ", damage , abilities_properties())
 
 func abilities_properties() -> String: 
 	var result := ""

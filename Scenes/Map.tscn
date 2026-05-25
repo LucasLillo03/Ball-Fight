@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://drfmt211x1kom"]
+[gd_scene load_steps=10 format=4 uid="uid://drfmt211x1kom"]
 
 [ext_resource type="Script" uid="uid://dbxg31bfh5ete" path="res://Scripts/Model/map.gd" id="1_7yn8b"]
 [ext_resource type="Texture2D" uid="uid://cll6cfseudcuh" path="res://Assets/Topdown Classic Boardgame/Image/Board.png" id="1_s486e"]
@@ -212,6 +212,10 @@ font_size = 26
 outline_size = 2
 outline_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_qumfl"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_etk83"]
 font_size = 26
 outline_size = 2
@@ -259,7 +263,7 @@ label_settings = SubResource("LabelSettings_7yn8b")
 layout_mode = 2
 size_flags_horizontal = 3
 text = "VS"
-label_settings = SubResource("LabelSettings_7yn8b")
+label_settings = SubResource("LabelSettings_qumfl")
 horizontal_alignment = 1
 
 [node name="BallBName" type="Label" parent="CanvasLayer/Names"]
