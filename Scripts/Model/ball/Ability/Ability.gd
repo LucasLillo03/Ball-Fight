@@ -5,23 +5,20 @@ var requires_update := false
 var ball : Node 
 var ability_name := "No name"
 
+signal ball_asigned
+
 func setup(ball) -> void: 
 	self.ball = ball
-	
+	ball_asigned.emit()
+
 func on_ready() -> void: 
 	pass 
-
+	
 func on_update(delta):
 	pass
 
-func pre_take_damage(damage_context : DamageContext) -> void: 
-	pass 
-
 func on_take_damage(damage_context : DamageContext) -> int:
 	return damage_context.amount
-
-func post_take_damage(damage_context : DamageContext) -> void:
-	pass
 
 func on_attack(target):
 	pass

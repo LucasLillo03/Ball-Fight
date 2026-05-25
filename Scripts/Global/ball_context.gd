@@ -8,7 +8,12 @@ var balls := {
 var abilities := {
 	Invulnerability : true,
 	DamageAccumulator : true,
-	IntermittentFrozen : true
+	Frozen : true
 }
+
+var activationStrategies := {
+	TimedActivation : true
+}
+
 func get_ball_name(ball) -> String: 
 	return balls.get(ball)

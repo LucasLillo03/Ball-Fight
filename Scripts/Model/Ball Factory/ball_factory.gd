@@ -41,7 +41,7 @@ static func _setup_channeler(ball : Ball):
 
 	ball.add_ability(Invulnerability.new())
 	ball.add_ability(DamageAccumulator.new())
-	ball.add_ability(IntermittentFrozen.new())
+	ball.add_ability(Frozen.new())
 
 func create_from_config(config : BallConfig) -> Ball:
 

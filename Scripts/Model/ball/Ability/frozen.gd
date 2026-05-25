@@ -1,19 +1,14 @@
-class_name IntermittentFrozen
-extends IntermittentAbility
+class_name Frozen
+extends ActivatableAbility
 
 var _save_linear_veloccity : Vector2
 var _save_angular_veloccity : float
 
 func _init() -> void:
+	super()
 	ability_name = "Intermittent frozen"
-	
-func on_ready() -> void: 
-	rand_times()
-	
-	
-	timer_initialization()
 
-func _active_actions() -> void: 
+func on_active() -> void: 
 	_save_angular_veloccity = ball.angular_velocity
 	_save_linear_veloccity = ball.linear_velocity
 	
@@ -23,7 +18,7 @@ func _active_actions() -> void:
 	ball.linear_velocity = Vector2.ZERO
 	ball.angular_velocity = 0.0
 	
-func _inactive_actions() -> void:
+func on_desactive() -> void:
 	ball.movement_locked = false
 	ball.gravity_locked = false
 	
@@ -31,5 +26,5 @@ func _inactive_actions() -> void:
 	ball.angular_velocity = _save_angular_veloccity
 
 func get_property() -> String: 
-	var state := "active in " if !active else "desactive in "
-	return ability_name + ": " + state + str(int(timer.time_left))
+	var state := "active " if active else "desactive "
+	return ability_name + ": " + state

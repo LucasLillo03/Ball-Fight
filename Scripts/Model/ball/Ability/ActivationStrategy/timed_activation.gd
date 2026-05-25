@@ -1,13 +1,14 @@
-class_name IntermittentAbility
-extends Ability
+class_name TimedActivation
+extends ActivationStrategy
 
-var active := false 
+var active_time : float
+var inactive_time : float
 
 var timer : Timer 
-var inactive_time := 5.0 
-var active_time := 3.0
+var active := false
 
-func timer_initialization() -> void: 
+func concrete_setup(): 
+	rand_times()
 	timer = Timer.new()
 	
 	ball.add_child(timer)
@@ -15,12 +16,13 @@ func timer_initialization() -> void:
 	timer.wait_time = inactive_time
 	timer.timeout.connect(_on_timeout)
 	timer.start()
-
+	
 func rand_times(): 
 	inactive_time = randf_range(2.0, 10.0)
 	active_time = randf_range(2.0, 10.0)
-
+	
 func _on_timeout(): 
+	print("aaaaaaa")
 	active = !active 
 	
 	if active: 
@@ -31,15 +33,9 @@ func _on_timeout():
 	timer.start()
 
 func _active(): 
-	_active_actions()
+	ability.on_active()
 	timer.wait_time = active_time
 
 func _desactive(): 
-	_inactive_actions()
+	ability.on_desactive()
 	timer.wait_time = inactive_time
-
-func _active_actions() -> void: 
-	print("this method must be implemented")
-
-func _inactive_actions() -> void: 
-	print("this method must be implemented")

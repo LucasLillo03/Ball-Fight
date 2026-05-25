@@ -136,15 +136,9 @@ func _on_body_entered(body: Node) -> void:
 
 func take_damage(damage_context : DamageContext):
 	for ability in abilities:
-		ability.pre_take_damage(damage_context)
-		
-	for ability in abilities:
 		ability.on_take_damage(damage_context)
 		
 		if damage_context.cancelled: return 
-	
-	for ability in abilities:
-		ability.post_take_damage(damage_context)
 	
 	life -= damage_context.amount
 

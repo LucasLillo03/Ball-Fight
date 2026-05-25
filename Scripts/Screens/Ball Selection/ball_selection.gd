@@ -34,8 +34,7 @@ func _ready() -> void:
 func finalize_selection() -> void: 
 	var map_scene = preload("res://Scenes/Map.tscn")
 	var map = map_scene.instantiate()
-		
-	print(ballA, ballB)
+
 	GameState.ball_a_scene = ballA
 	GameState.ball_b_scene = ballB
 		
