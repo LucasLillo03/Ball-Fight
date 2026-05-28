@@ -13,6 +13,7 @@ texture_filter = 1
 font_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
 
 [node name="Ball" type="RigidBody2D" groups=["ball"]]
+lock_rotation = true
 script = ExtResource("1_ovqem")
 metadata/_custom_type_script = "uid://4emrd506leyq"
 
@@ -41,6 +42,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="IconManager" type="Node2D" parent="."]
 script = ExtResource("3_u70l3")
+keep_global_horizontal = null
+icon_ratio = null
 
 [node name="Icon" type="Sprite2D" parent="IconManager"]
 region_rect = Rect2(0, 0, 345.5, 346)

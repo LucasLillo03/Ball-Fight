@@ -2,7 +2,6 @@ class_name AcceleratedAndLimited
 extends ClampSpeedBehavior
 
 var boost_factor: float 
-var max_speed: float   
 
 func _init(boost_factor : float, max_speed : float):
 	self.boost_factor = boost_factor

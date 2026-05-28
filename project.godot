@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 BallContext="*res://Scripts/Global/ball_context.gd"
 GameState="*res://Scripts/Global/game_state.gd"
+Constants="*res://Scripts/Global/constants.gd"
 
 [global_group]
 

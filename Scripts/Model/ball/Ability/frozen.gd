@@ -9,6 +9,7 @@ func _init() -> void:
 	ability_name = "Intermittent frozen"
 
 func on_active() -> void: 
+	super()
 	_save_angular_veloccity = ball.angular_velocity
 	_save_linear_veloccity = ball.linear_velocity
 	
@@ -19,6 +20,7 @@ func on_active() -> void:
 	ball.angular_velocity = 0.0
 	
 func on_desactive() -> void:
+	super()
 	ball.movement_locked = false
 	ball.gravity_locked = false
 	
@@ -28,3 +30,10 @@ func on_desactive() -> void:
 func get_property() -> String: 
 	var state := "active " if active else "desactive "
 	return ability_name + ": " + state
+
+func get_copy() -> Ability:
+	var copy = Frozen.new()
+	
+	copy.activation_strategy = activation_strategy.get_copy()
+	
+	return copy

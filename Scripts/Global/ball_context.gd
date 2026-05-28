@@ -8,7 +8,8 @@ var balls := {
 var abilities := {
 	Invulnerability : true,
 	DamageAccumulator : true,
-	Frozen : true
+	Frozen : true,
+	BallCreator : true
 }
 
 var activationStrategies := {

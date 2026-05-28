@@ -35,9 +35,13 @@ const MAX_INITIAL_LIFE := 500
 const MIN_INITIAL_VELOCITY := 500.0
 const MAX_INITIAL_VELOCITY := 1000.0
 
+const MIN_BASE_DAMAGE := 1
+const MAX_BASE_DAMAGE := 10
+
 signal radius_changed
 signal damage_blocked
 signal i_die
+signal game_over
 
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
@@ -47,16 +51,24 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 	self.life = life
 	self.clamp_speed_behavior = clamp_speed
 
+
+
 func rand_stats() -> void:
 	randomize()
 	
-	radius = randf_range(20.0, 50.0)
+	radius = rand_radius()
 	
-	damage = randi_range(1, 20)
+	damage = randi_range(1, 10)
 	
 	color = Color(randf(),randf(),randf())
 	
 	_update_stats()
+
+func rand_radius() -> float: 
+	return randf_range(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS)
+
+func rand_damage() -> int: 
+	return randi_range(MIN_BASE_DAMAGE, MAX_BASE_DAMAGE)
 
 func _update_stats():
 	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
@@ -64,13 +76,15 @@ func _update_stats():
 	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)
 	var percentage_to_life = func(x : float) -> int: return floor(MIN_INITIAL_LIFE + ( (x-1) * (MAX_INITIAL_LIFE - MIN_INITIAL_LIFE) ) / 99)
 	#(1.0, 100.0) -> (MIN_INITIAL_VELOCITY, MAX_INITIAL_VELOCITY)
-	var percentage_to_speed = func(x : float) -> float: return (MIN_INITIAL_VELOCITY + ( (x-1) * (MAX_INITIAL_VELOCITY - MIN_INITIAL_VELOCITY) ) / 99)
+	var percentage_to_speed = func(x : float) -> float: return (MAX_INITIAL_VELOCITY + MIN_INITIAL_VELOCITY) - (MIN_INITIAL_VELOCITY + ( (x-1) * (MAX_INITIAL_VELOCITY - MIN_INITIAL_VELOCITY) ) / 99)
 	 
 	var transformed_radius : float = radius_to_percentage.call(radius)
 	
 	life = percentage_to_life.call(transformed_radius)
 	
 	max_speed = percentage_to_speed.call(transformed_radius)
+	
+	if clamp_speed_behavior: clamp_speed_behavior.set_max_speed(max_speed)
 	
 func add_ability(ability : Ability):
 	abilities.append(ability)
@@ -117,6 +131,9 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	if is_dead(): 
 		i_die.emit()
+		
+		queue_free()
+		game_over.emit()
 
 func is_dead() -> bool: 
 	return life <= 0
@@ -128,6 +145,7 @@ func _on_body_entered(body: Node) -> void:
 		
 		var damage_context = DamageContext.new()
 		damage_context.amount = ball.get_damage()
+		damage_context.source = body
 		
 		take_damage(damage_context)
 	else: 
@@ -187,9 +205,37 @@ func set_color(new_color: Color) -> void:
 	color = new_color
 	if is_instance_valid(poly):
 		poly.color = color
+
+func set_radius(radius : float) -> void:
+	self.radius = radius
+	_update_stats()
 #endregion
 
+func get_config() -> BallConfig: 
+	var config = BallConfig.new()
+	
+	config.ball_name = ball_name
+	
+	for ability in abilities: 
+		config.abilities.append(ability.get_copy())
+	
+	config.radius = radius
+	config.speed_behavior = clamp_speed_behavior.get_copy() #TODO must be implemented
+	config.color = color 
+	config.damage = damage
+	
+	return config
 
-
+func set_config(config : BallConfig) -> void: 
+	clamp_speed_behavior = config.speed_behavior
+	damage = config.damage
+	set_color(config.color)
+	set_radius(config.radius)
+	
+	for ability in config.abilities: 
+		add_ability(ability)
+	
+	ball_name = config.ball_name
+	
 
 	

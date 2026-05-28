@@ -43,13 +43,10 @@ static func _setup_channeler(ball : Ball):
 	ball.add_ability(DamageAccumulator.new())
 	ball.add_ability(Frozen.new())
 
-func create_from_config(config : BallConfig) -> Ball:
+static func create_from_config(config : BallConfig) -> Ball:
 
 	var ball = BALL_SCENE.instantiate()
 
-	ball.ball_name = config.ball_name
-
-	for ability in config.abilities:
-		ball.add_ability(ability.new())
+	ball.set_config(config)
 
 	return ball

@@ -8,7 +8,6 @@ var timer : Timer
 var active := false
 
 func concrete_setup(): 
-	rand_times()
 	timer = Timer.new()
 	
 	ball.add_child(timer)
@@ -17,12 +16,11 @@ func concrete_setup():
 	timer.timeout.connect(_on_timeout)
 	timer.start()
 	
-func rand_times(): 
+func rand_stats(): 
 	inactive_time = randf_range(2.0, 10.0)
 	active_time = randf_range(2.0, 10.0)
 	
 func _on_timeout(): 
-	print("aaaaaaa")
 	active = !active 
 	
 	if active: 
@@ -39,3 +37,10 @@ func _active():
 func _desactive(): 
 	ability.on_desactive()
 	timer.wait_time = inactive_time
+
+func get_copy() -> ActivationStrategy: 
+	var copy = TimedActivation.new()
+	copy.active_time = active_time
+	copy.inactive_time = inactive_time
+	
+	return copy

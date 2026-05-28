@@ -30,7 +30,6 @@ func spawn_ballA(ball : Ball) -> void:
 	ballA.scenery = self
 	
 	var ball_dead = func():
-		ballA.queue_free()
 		_game_over()
 	
 	ballA.i_die.connect(ball_dead)	
@@ -50,7 +49,6 @@ func spawn_ballB(ball : Ball) -> void:
 	ballB.scenery = self
 	
 	var ball_dead = func():
-		ballB.queue_free()
 		_game_over()
 	
 	ballB.i_die.connect(ball_dead)	

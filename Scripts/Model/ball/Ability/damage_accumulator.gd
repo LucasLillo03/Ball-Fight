@@ -10,6 +10,7 @@ func setup(ball) -> void:
 	
 func _init() -> void:
 	ability_name = "Damage Acumulator"
+	dependencies.append(Constants.TAG.DAMAGE_BROCKER)
 	
 func on_ready() -> void: 
 	returned_percentage = randf_range(0.1, 1)
@@ -26,3 +27,10 @@ func _on_blocked_damage(amount) -> void:
 
 func get_property() -> String: 
 	return str("Accumulated Damage : ", accumulated_damage)
+
+func get_copy() -> Ability: 
+	var copy = DamageAccumulator.new() 
+	
+	copy.returned_percentage = returned_percentage
+	
+	return copy
