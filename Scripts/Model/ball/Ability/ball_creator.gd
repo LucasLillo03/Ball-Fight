@@ -6,7 +6,18 @@ var spawn_ray : RayCast2D
 var pending_spawn := false 
 var create_ball_config : BallConfig
 
-var can_create := true 
+#NOTE this is the main method of the creator abilities
+func rand_ball_config() -> BallConfig: 
+	var config = BallConfig.new()
+	
+	config.ball_name = "Clone"
+	config.color = ball.color
+	config.abilities.append(IgnoreBall.new(clones))
+	config.radius = ball.rand_radius()
+	config.damage = ball.rand_damage()
+	config.speed_behavior = AcceleratedAndLimited.new(ball.BOOST_FACTOR, ball.max_speed)
+	
+	return config
 
 func _init() -> void:
 	super()
@@ -20,24 +31,15 @@ func _init() -> void:
 	
 	ball_asigned.connect(_on_ball_asigned)
 	
-func rand_ball_config() -> BallConfig: 
-	var config = BallConfig.new()
-	
-	config.ball_name = "Clone"
-	config.color = ball.color
-	config.abilities.append(IgnoreBall.new(clones))
-	config.radius = ball.rand_radius()
-	config.damage = ball.rand_damage()
-	config.speed_behavior = AcceleratedAndLimited.new(ball.BOOST_FACTOR, ball.max_speed)
-	
-	return config
 	
 func _on_ball_asigned() -> void:
 	var clones_game_over = func (): 
-		can_create = false
-		
 		for clone in clones: 
-			if clone: clone.freeze = true
+			if clone && clone != ball: clone.game_over_actions()
+	
+	var the_queen_is_dead = func (): 
+		for clone in clones: 
+			if clone && clone != ball: clone.die()
 	
 	clones.append(ball)
 	
@@ -48,6 +50,7 @@ func _on_ball_asigned() -> void:
 	
 	ball.add_child(spawn_ray)
 	ball.game_over.connect(clones_game_over)
+	ball.i_die.connect(the_queen_is_dead)
 	ball.add_ability(IgnoreBall.new(clones))
 	
 	create_ball_config = rand_ball_config()
@@ -68,8 +71,6 @@ func _rand_size() -> float:
 func on_active(): 
 	super()
 	
-	if !can_create: return
-	
 	pending_spawn = true
 
 func try_spawn() -> void: 
@@ -79,21 +80,27 @@ func try_spawn() -> void:
 
 func create_ball() -> Ball: 	
 	var created_ball = BallFactory.create_from_config(create_ball_config)
-	
 	var spawn_pos = spawn_ray.to_global(spawn_ray.target_position)
 	
 	ball.add_child(created_ball)
-	
 	created_ball.global_position = spawn_pos
 	
 	var dir = (spawn_pos - ball.global_position).normalized()
-	
 	created_ball.linear_velocity = dir * 500.0
 	
+	var clone_die = func():
+		clones.erase(created_ball)
+	
 	clones.append(created_ball)
+	created_ball.i_die.connect(clone_die)
 	
 	return created_ball
 
+func get_property() -> String:
+	var string = str("balls created: ", clones.size() - 1)
+	
+	return string
+	
 func get_copy() -> Ability: 
 	var copy = BallCreator.new()
 	

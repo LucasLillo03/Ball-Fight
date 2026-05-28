@@ -24,18 +24,20 @@ func _on_timeout():
 	active = !active 
 	
 	if active: 
-		_active()
+		try_active()
 	else: 
-		_desactive()
+		try_desactive()
 	
 	timer.start()
 
-func _active(): 
-	ability.on_active()
+func try_active(): 
+	super()
+	
 	timer.wait_time = active_time
 
-func _desactive(): 
-	ability.on_desactive()
+func try_desactive(): 
+	super()
+	
 	timer.wait_time = inactive_time
 
 func get_copy() -> ActivationStrategy: 

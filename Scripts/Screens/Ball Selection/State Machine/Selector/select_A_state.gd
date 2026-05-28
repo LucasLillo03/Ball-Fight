@@ -12,7 +12,7 @@ func back() -> void:
 
 func confirm() -> void:
 	for ability in parent.selected_abilities: 
-		ball.add_ability(ability)
+		ball.add_ability(ability.new())
 	
 	for button in parent.ability_buttons: 
 		button.button_pressed = false

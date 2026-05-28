@@ -29,10 +29,7 @@ func spawn_ballA(ball : Ball) -> void:
 	ballA.linear_velocity = Vector2(LAUNCH_VELOCITY,LAUNCH_VELOCITY)
 	ballA.scenery = self
 	
-	var ball_dead = func():
-		_game_over()
-	
-	ballA.i_die.connect(ball_dead)	
+	ballA.i_die.connect(_game_over)	
 	
 	add_child(ballA)
 	
@@ -48,10 +45,7 @@ func spawn_ballB(ball : Ball) -> void:
 	ballB.linear_velocity = Vector2(-LAUNCH_VELOCITY,LAUNCH_VELOCITY)
 	ballB.scenery = self
 	
-	var ball_dead = func():
-		_game_over()
-	
-	ballB.i_die.connect(ball_dead)	
+	ballB.i_die.connect(_game_over)	
 	
 	add_child(ballB)
 	
@@ -62,4 +56,4 @@ func spawn_ballB(ball : Ball) -> void:
 	
 func _game_over() -> void:
 	for ball : Ball in balls: 
-		ball.freeze = true
+		ball.game_over_actions()

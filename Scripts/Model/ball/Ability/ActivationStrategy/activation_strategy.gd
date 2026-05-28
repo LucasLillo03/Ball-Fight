@@ -39,6 +39,12 @@ func rand_stats() -> void:
 func concrete_setup() -> void: 
 	pass 
 
+func try_active() -> void: 
+	if ability.can_activate: ability.on_active()
+
+func try_desactive(): 
+	if ability.can_desactivate: ability.on_desactive()
+	
 #executes actions in delta time
 func update(delta) -> void: 
 	pass

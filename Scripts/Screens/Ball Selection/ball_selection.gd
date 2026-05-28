@@ -9,20 +9,23 @@ var ballA : Ball
 var ballB: Ball
 
 var ability_buttons : Array[Button]
-var selected_abilities : Array[Ability]
+var selected_abilities := []
 
 func _ready() -> void:
 	state_machine = SelectorStateMachine.new(self)
 	
 	for ability in BallContext.abilities:
-		var current_ability = ability.new()
+		var ability_aux = ability.new()
 		var button = Button.new()
 		
 		var button_toggled = func(toggled : bool) : 
-			if toggled : selected_abilities.append(current_ability)
-			else: selected_abilities.erase(current_ability)
+			if toggled : 
+				selected_abilities.append(ability)
+				print("ability append: ",ability)
+			else: 
+				selected_abilities.erase(ability)
 		
-		button.text = current_ability.get_ablity_name()
+		button.text = ability_aux.get_ablity_name()
 		button.toggle_mode = true
 		
 		button.toggled.connect(button_toggled)

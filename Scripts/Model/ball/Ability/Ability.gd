@@ -8,6 +8,9 @@ var ability_name := "No name"
 var tags : Array[Constants.TAG] = []
 var dependencies : Array[Constants.TAG] = [] 
 
+var can_activate := true 
+var can_desactivate := true 
+
 signal ball_asigned
 
 func setup(ball) -> void: 

@@ -12,6 +12,9 @@ func on_take_damage(damage : DamageContext) -> int:
 		
 	return damage.amount 
 
+func get_property() -> String:
+	return ""
+	
 func get_copy() -> Ability: 
 	var copy_arr = ignored_balls 
 	

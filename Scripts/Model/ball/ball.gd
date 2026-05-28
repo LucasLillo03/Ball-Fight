@@ -130,14 +130,25 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	if is_dead(): 
-		i_die.emit()
-		
-		queue_free()
-		game_over.emit()
+		die()
 
+#manages dead conditions
 func is_dead() -> bool: 
 	return life <= 0
 
+#manages dead actions
+func die() -> void: 
+	i_die.emit()
+		
+	queue_free()
+
+#executes the actions when the game ends
+func game_over_actions() -> void: 
+	game_over.emit()
+	freeze = true
+	
+	for ability in abilities: 
+		ability.can_activate = false 
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("ball"):
