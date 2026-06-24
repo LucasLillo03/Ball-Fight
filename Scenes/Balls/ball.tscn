@@ -44,3 +44,5 @@ script = ExtResource("3_u70l3")
 
 [node name="Icon" type="Sprite2D" parent="IconManager"]
 region_rect = Rect2(0, 0, 345.5, 346)
+
+[node name="Sprite2D" type="Sprite2D" parent="IconManager"]

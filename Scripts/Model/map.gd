@@ -3,24 +3,17 @@ extends Node2D
 
 @onready var spawnA = $SpawnA
 @onready var spawnB = $SpawnB
-@onready var ballA_name = $CanvasLayer/Names/BallAName
-@onready var ballA_properties = $CanvasLayer/Properties/BallAProperties
-@onready var ballB_name = $CanvasLayer/Names/BallBName
-@onready var ballB_properties = $CanvasLayer/Properties/BallBProperties
+@onready var battle_ui = $BattleUI
 
 var ballA: Ball
 var ballB: Ball
-var balls: Array
+var balls_arr: Array
 
 const LAUNCH_VELOCITY := 200
 
 func _ready() -> void:
 	spawn_ballA(GameState.ball_a_scene)
 	spawn_ballB(GameState.ball_b_scene)
-
-func _process(delta: float) -> void:
-	if ballA: ballA_properties.text = ballA.get_properties()
-	if ballB: ballB_properties.text = ballB.get_properties()
 	
 func spawn_ballA(ball : Ball) -> void: 	
 		
@@ -33,10 +26,9 @@ func spawn_ballA(ball : Ball) -> void:
 	
 	add_child(ballA)
 	
-	balls.append(ballA)
+	balls_arr.append(ballA)
 	
-	ballA_name.text = "Ball 1"
-	ballA_name.label_settings.font_color = ballA.color
+	battle_ui.set_ball_A(ballA)
 	
 func spawn_ballB(ball : Ball) -> void: 
 	ballB = ball
@@ -49,11 +41,12 @@ func spawn_ballB(ball : Ball) -> void:
 	
 	add_child(ballB)
 	
-	balls.append(ballB)
+	balls_arr.append(ballB)
 	
-	ballB_name.text = "Ball 2"
-	ballB_name.label_settings.font_color = ballB.color
+	battle_ui.set_ball_B(ballB)
+
 	
 func _game_over() -> void:
-	for ball : Ball in balls: 
+	for ball : Ball in balls_arr: 
 		ball.game_over_actions()
+	battle_ui.game_over()

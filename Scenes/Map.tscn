@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=4 uid="uid://drfmt211x1kom"]
+[gd_scene load_steps=8 format=4 uid="uid://drfmt211x1kom"]
 
 [ext_resource type="Script" uid="uid://dbxg31bfh5ete" path="res://Scripts/Model/map.gd" id="1_7yn8b"]
 [ext_resource type="Texture2D" uid="uid://cll6cfseudcuh" path="res://Assets/Topdown Classic Boardgame/Image/Board.png" id="1_s486e"]
+[ext_resource type="PackedScene" uid="uid://cb5gpotey87p4" path="res://Scenes/UI/battle_ui.tscn" id="3_etk83"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_7yn8b"]
 tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 1, 131072, 0, 1, 196608, 0, 1, 262144, 0, 1, 327680, 0, 1, 393216, 0, 1, 458752, 0, 1, 524288, 0, 1, 589824, 0, 1, 655360, 0, 1, 720896, 0, 10, 786432, 0, 11, 1, 65536, 0, 786433, 196608, 11, 2, 65536, 0, 786434, 196608, 11, 3, 65536, 0, 786435, 196608, 11, 4, 65536, 0, 786436, 196608, 11, 5, 65536, 0, 786437, 196608, 11, 6, 65536, 0, 786438, 196608, 11, 7, 65536, 0, 786439, 196608, 11, 8, 65536, 0, 786440, 196608, 11, 9, 65536, 0, 786441, 196608, 11, 10, 65536, 0, 786442, 196608, 11, 11, 65536, 0, 786443, 196608, 11, 12, 65536, 0, 786444, 196608, 11, 13, 65536, 0, 786445, 196608, 11, 14, 720896, 0, 65550, 720896, 9, 131086, 720896, 9, 196622, 720896, 9, 262158, 720896, 9, 327694, 720896, 9, 393230, 720896, 9, 458766, 720896, 9, 524302, 720896, 9, 589838, 720896, 9, 655374, 720896, 9, 720910, 720896, 9, 786446, 720896, 11)
@@ -207,20 +208,6 @@ physics_layer_0/physics_material = SubResource("PhysicsMaterial_7yn8b")
 sources/0 = SubResource("TileSetAtlasSource_etk83")
 pattern_0 = SubResource("TileMapPattern_7yn8b")
 
-[sub_resource type="LabelSettings" id="LabelSettings_7yn8b"]
-font_size = 26
-outline_size = 2
-outline_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_qumfl"]
-outline_size = 2
-outline_color = Color(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_etk83"]
-font_size = 26
-outline_size = 2
-outline_color = Color(0.0165517, 0.0165517, 0.0165517, 1)
-
 [node name="Map" type="Node2D"]
 z_index = -1
 script = ExtResource("1_7yn8b")
@@ -239,62 +226,4 @@ position = Vector2(484, 232)
 [node name="SpawnB" type="Marker2D" parent="."]
 position = Vector2(660, 232)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Names" type="HBoxContainer" parent="CanvasLayer"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -259.0
-offset_top = 9.0
-offset_right = 261.0
-offset_bottom = 45.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-alignment = 1
-
-[node name="BallAName" type="Label" parent="CanvasLayer/Names"]
-layout_mode = 2
-text = "Ball A"
-label_settings = SubResource("LabelSettings_7yn8b")
-
-[node name="Vs" type="Label" parent="CanvasLayer/Names"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "VS"
-label_settings = SubResource("LabelSettings_qumfl")
-horizontal_alignment = 1
-
-[node name="BallBName" type="Label" parent="CanvasLayer/Names"]
-layout_mode = 2
-text = "Ball B"
-label_settings = SubResource("LabelSettings_etk83")
-
-[node name="Properties" type="HBoxContainer" parent="CanvasLayer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -260.0
-offset_top = -64.0
-offset_right = 260.0
-offset_bottom = -28.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-alignment = 1
-
-[node name="BallAProperties" type="Label" parent="CanvasLayer/Properties"]
-layout_mode = 2
-text = "Ball A: property"
-
-[node name="AspectRatioContainer2" type="Control" parent="CanvasLayer/Properties"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="BallBProperties" type="Label" parent="CanvasLayer/Properties"]
-layout_mode = 2
-text = "Ball B: property"
+[node name="BattleUI" parent="." instance=ExtResource("3_etk83")]

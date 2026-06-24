@@ -1,0 +1,122 @@
+[gd_scene load_steps=6 format=3 uid="uid://cb5gpotey87p4"]
+
+[ext_resource type="Script" uid="uid://d01iypujwlguu" path="res://Scripts/Screens/battle_ui.gd" id="1_8ot8m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yrpre"]
+font_size = 26
+outline_size = 2
+outline_color = Color(0.000693898, 0.000693898, 0.000693898, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8ot8m"]
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_w7saw"]
+font_size = 26
+outline_size = 2
+outline_color = Color(0.0165517, 0.0165517, 0.0165517, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ot8m"]
+bg_color = Color(0.133333, 0.309804, 0.329412, 0.560784)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="BattleUI" type="CanvasLayer"]
+script = ExtResource("1_8ot8m")
+
+[node name="Names" type="HBoxContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -259.0
+offset_top = 9.0
+offset_right = 261.0
+offset_bottom = 45.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="BallAName" type="Label" parent="Names"]
+layout_mode = 2
+text = "Ball A"
+label_settings = SubResource("LabelSettings_yrpre")
+
+[node name="Vs" type="Label" parent="Names"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "VS"
+label_settings = SubResource("LabelSettings_8ot8m")
+horizontal_alignment = 1
+
+[node name="BallBName" type="Label" parent="Names"]
+layout_mode = 2
+text = "Ball B"
+label_settings = SubResource("LabelSettings_w7saw")
+
+[node name="Properties" type="HBoxContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -64.0
+offset_right = 260.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="BallAProperties" type="Label" parent="Properties"]
+layout_mode = 2
+text = "Ball A: property"
+
+[node name="AspectRatioContainer2" type="Control" parent="Properties"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BallBProperties" type="Label" parent="Properties"]
+layout_mode = 2
+text = "Ball B: property"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -244.0
+offset_top = -164.5
+offset_right = 244.0
+offset_bottom = 164.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ot8m")
+
+[node name="GameOverMenu" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="PanelContainer/GameOverMenu"]
+layout_mode = 2
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="RetryButton" type="Button" parent="PanelContainer/GameOverMenu"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Play Again"
+
+[node name="MainMenuButton" type="Button" parent="PanelContainer/GameOverMenu"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Main Menu"
+
+[connection signal="pressed" from="PanelContainer/GameOverMenu/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="PanelContainer/GameOverMenu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

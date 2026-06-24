@@ -37,7 +37,7 @@ func _on_ball_asigned() -> void:
 		for clone in clones: 
 			if clone && clone != ball: clone.game_over_actions()
 	
-	var the_queen_is_dead = func (): 
+	var the_queen_is_dead = func (): 	
 		for clone in clones: 
 			if clone && clone != ball: clone.die()
 	
