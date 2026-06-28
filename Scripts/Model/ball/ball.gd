@@ -17,26 +17,11 @@ var bound_sound_player : AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
 var clamp_speed_behavior : ClampSpeedBehavior
 var abilities : Array[Ability]
-var updating_abilities : Array[Ability]
+var updating_abilities : Array[Ability] #array de habilidades que requieren update
 var scenery : Map
 
 var movement_locked := false 
 var gravity_locked := false
-
-const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
-const BOOST_FACTOR := 1.50 
-
-const MIN_INITIAL_RADIUS := 20.0
-const MAX_INITIAL_RADIUS := 50.0
-
-const MIN_INITIAL_LIFE := 50
-const MAX_INITIAL_LIFE := 500
-
-const MIN_INITIAL_VELOCITY := 500.0
-const MAX_INITIAL_VELOCITY := 1000.0
-
-const MIN_BASE_DAMAGE := 1
-const MAX_BASE_DAMAGE := 10
 
 signal radius_changed
 signal damage_blocked
@@ -65,18 +50,21 @@ func rand_stats() -> void:
 	_update_stats()
 
 func rand_radius() -> float: 
-	return randf_range(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS)
+	return randf_range(Constants.MIN_INITIAL_RADIUS, Constants.MAX_INITIAL_RADIUS)
 
 func rand_damage() -> int: 
-	return randi_range(MIN_BASE_DAMAGE, MAX_BASE_DAMAGE)
+	return randi_range(Constants.MIN_BASE_DAMAGE, Constants.MAX_BASE_DAMAGE)
 
 func _update_stats():
 	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
-	var radius_to_percentage = func(x : float) -> float : return (1 + ((x-MIN_INITIAL_RADIUS) * 99) / (100 - MAX_INITIAL_RADIUS)) 
+	var radius_to_percentage = func(x : float) -> float : return (1 + ((x - Constants.MIN_INITIAL_RADIUS) * 99) / (100 - Constants.MAX_INITIAL_RADIUS)) 
 	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)
-	var percentage_to_life = func(x : float) -> int: return floor(MIN_INITIAL_LIFE + ( (x-1) * (MAX_INITIAL_LIFE - MIN_INITIAL_LIFE) ) / 99)
+	var percentage_to_life = func(x : float) -> int: return floor(Constants.MIN_INITIAL_LIFE + ( (x-1) * (Constants.MAX_INITIAL_LIFE - Constants.MIN_INITIAL_LIFE) ) / 99)
 	#(1.0, 100.0) -> (MIN_INITIAL_VELOCITY, MAX_INITIAL_VELOCITY)
-	var percentage_to_speed = func(x : float) -> float: return (MAX_INITIAL_VELOCITY + MIN_INITIAL_VELOCITY) - (MIN_INITIAL_VELOCITY + ( (x-1) * (MAX_INITIAL_VELOCITY - MIN_INITIAL_VELOCITY) ) / 99)
+	var percentage_to_speed = func(x : float) -> float: 
+		var accumulated_initial_velocity = (Constants.MAX_INITIAL_VELOCITY + Constants.MIN_INITIAL_VELOCITY)
+		var percentage_relation = (x-1) * (Constants.MAX_INITIAL_VELOCITY - Constants.MIN_INITIAL_VELOCITY)
+		return accumulated_initial_velocity - (Constants.MIN_INITIAL_VELOCITY + percentage_relation / 99)
 	 
 	var transformed_radius : float = radius_to_percentage.call(radius)
 	
@@ -96,7 +84,7 @@ func add_ability(ability : Ability):
 
 func _ready() -> void:
 	add_child(bound_sound_player)
-	bound_sound_player.stream = BOUND_SOUND
+	bound_sound_player.stream = Constants.BOUND_SOUND
 	
 	initialization()
 	
