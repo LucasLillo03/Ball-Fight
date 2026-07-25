@@ -36,8 +36,6 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 	self.life = life
 	self.clamp_speed_behavior = clamp_speed
 
-
-
 func rand_stats() -> void:
 	randomize()
 	
@@ -235,6 +233,3 @@ func set_config(config : BallConfig) -> void:
 		add_ability(ability)
 	
 	ball_name = config.ball_name
-	
-
-	

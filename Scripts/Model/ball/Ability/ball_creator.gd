@@ -15,7 +15,7 @@ func rand_ball_config() -> BallConfig:
 	config.abilities.append(IgnoreBall.new(clones))
 	config.radius = ball.rand_radius()
 	config.damage = ball.rand_damage()
-	config.speed_behavior = AcceleratedAndLimited.new(ball.BOOST_FACTOR, ball.max_speed)
+	config.speed_behavior = AcceleratedAndLimited.new(Constants.BOOST_FACTOR, ball.max_speed)
 	
 	return config
 
@@ -66,7 +66,7 @@ func on_update(delta: float) -> void:
 	#else: crown.visible = true
 
 func _rand_size() -> float:
-	return randf_range(Ball.MIN_INITIAL_RADIUS / 2, Ball.MAX_INITIAL_RADIUS / 2)
+	return randf_range(Constants.MIN_INITIAL_RADIUS / 2, Constants.MAX_INITIAL_RADIUS / 2)
 
 func on_active(): 
 	super()

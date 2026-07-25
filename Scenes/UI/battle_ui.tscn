@@ -84,7 +84,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 text = "Ball B: property"
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="GameOverPanel" type="PanelContainer" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -98,25 +99,25 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8ot8m")
 
-[node name="GameOverMenu" type="VBoxContainer" parent="PanelContainer"]
+[node name="GameOverMenu" type="VBoxContainer" parent="GameOverPanel"]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="GameOverLabel" type="Label" parent="PanelContainer/GameOverMenu"]
+[node name="GameOverLabel" type="Label" parent="GameOverPanel/GameOverMenu"]
 layout_mode = 2
 text = "GAME OVER"
 horizontal_alignment = 1
 
-[node name="RetryButton" type="Button" parent="PanelContainer/GameOverMenu"]
+[node name="RetryButton" type="Button" parent="GameOverPanel/GameOverMenu"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Play Again"
 
-[node name="MainMenuButton" type="Button" parent="PanelContainer/GameOverMenu"]
+[node name="MainMenuButton" type="Button" parent="GameOverPanel/GameOverMenu"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Main Menu"
 
-[connection signal="pressed" from="PanelContainer/GameOverMenu/RetryButton" to="." method="_on_retry_button_pressed"]
-[connection signal="pressed" from="PanelContainer/GameOverMenu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="GameOverPanel/GameOverMenu/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="GameOverPanel/GameOverMenu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

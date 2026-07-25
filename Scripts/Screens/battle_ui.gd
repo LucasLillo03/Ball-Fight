@@ -5,7 +5,7 @@ extends CanvasLayer
 @onready var ballA_properties = $Properties/BallAProperties
 @onready var ballB_name = $Names/BallBName
 @onready var ballB_properties = $Properties/BallBProperties
-@onready var game_over_ui = $GameOver
+@onready var game_over_ui = $GameOverPanel
 
 var ballA : Ball
 var ballB : Ball

@@ -1,10 +1,5 @@
 extends Node
 
-var balls := {
-	DefaultBall : "Deafult",
-	ChannelerBall : "Channeler",
-}
-
 var abilities := {
 	Invulnerability : true,
 	DamageAccumulator : true,
@@ -15,6 +10,3 @@ var abilities := {
 var activationStrategies := {
 	TimedActivation : true
 }
-
-func get_ball_name(ball) -> String: 
-	return balls.get(ball)
