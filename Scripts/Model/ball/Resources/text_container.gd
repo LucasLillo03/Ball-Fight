@@ -7,7 +7,7 @@ var life : int
 
 func _process(_delta: float) -> void:
 	var ball = get_parent()
-	life = ball.life
+	life = ball.stats.life
 	
 	label.text = str(life)
 	

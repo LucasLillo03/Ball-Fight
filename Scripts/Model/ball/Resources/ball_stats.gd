@@ -1,12 +1,30 @@
 class_name BallStats 
 extends RefCounted
 
-var radius : float
+var radius: float:
+	set(value):
+		radius = value
+		update_stats()
+		radius_changed.emit()
+
 var damage : int
-var color : Color 
+var color : Color:
+	set(value):
+		color = value
+		color_changed.emit()
 var life : int 
 var max_speed : float
 # var clamp_speed_behavior : ClampSpeedBehavior
+
+signal radius_changed
+signal color_changed
+
+func default_values() -> void: 
+	radius = Constants.DEFAULT_STATS.radius
+	damage = Constants.DEFAULT_STATS.damage
+	color = Constants.DEFAULT_STATS.color
+	life = Constants.DEFAULT_STATS.life
+	max_speed = Constants.DEFAULT_STATS.max_speed
 
 func rand_stats() -> void:
 	randomize()
@@ -17,7 +35,7 @@ func rand_stats() -> void:
 	
 	color = Color(randf(),randf(),randf())
 	
-	_update_stats()
+	update_stats()
 
 func rand_radius() -> float: 
 	return randf_range(Constants.MIN_INITIAL_RADIUS, Constants.MAX_INITIAL_RADIUS)
@@ -25,7 +43,7 @@ func rand_radius() -> float:
 func rand_damage() -> int: 
 	return randi_range(Constants.MIN_BASE_DAMAGE, Constants.MAX_BASE_DAMAGE)
 
-func _update_stats():
+func update_stats():
 	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
 	var radius_to_percentage = func(x : float) -> float : return (1 + ((x - Constants.MIN_INITIAL_RADIUS) * 99) / (100 - Constants.MAX_INITIAL_RADIUS)) 
 	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)

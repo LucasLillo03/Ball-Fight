@@ -4,18 +4,12 @@ extends ActivatableAbility
 var clones : Array[Ball] = []
 var spawn_ray : RayCast2D
 var pending_spawn := false 
-var create_ball_config : BallConfig
+var created_ball_config : BallConfig
 
 #NOTE this is the main method of the creator abilities
-func rand_ball_config() -> BallConfig: 
-	var config = BallConfig.new()
-	
+func ball_config() -> BallConfig: 
+	var config = BallFactory.create_rand_config()
 	config.ball_name = "Clone"
-	config.color = ball.color
-	config.abilities.append(IgnoreBall.new(clones))
-	config.radius = ball.rand_radius()
-	config.damage = ball.rand_damage()
-	config.speed_behavior = AcceleratedAndLimited.new(Constants.BOOST_FACTOR, ball.max_speed)
 	
 	return config
 
@@ -41,19 +35,23 @@ func _on_ball_asigned() -> void:
 		for clone in clones: 
 			if clone && clone != ball: clone.die()
 	
+	#main ball is added to array 
 	clones.append(ball)
 	
+	#setting spawn ray
 	spawn_ray.global_position = ball.global_position
-	spawn_ray.target_position = Vector2(0.0, ball.radius + 20)
-	
-	
-	
+	spawn_ray.target_position = Vector2(0.0, ball.stats.radius + 20)
 	ball.add_child(spawn_ray)
+	
+	#connect signals
 	GameState.game_over.connect(clones_game_over)
 	ball.i_die.connect(the_queen_is_dead)
+
+	#main ball needs ignore damage of their clones 
 	ball.ability_system.add_ability(IgnoreBall.new(clones))
 	
-	create_ball_config = rand_ball_config()
+	#sets the config of all clones
+	created_ball_config = ball_config()
 
 func on_update(delta: float) -> void:
 	super(delta)
@@ -64,9 +62,6 @@ func on_update(delta: float) -> void:
 
 	#if clones.is_empty(): crown.visible = false
 	#else: crown.visible = true
-
-func _rand_size() -> float:
-	return randf_range(Constants.MIN_INITIAL_RADIUS / 2, Constants.MAX_INITIAL_RADIUS / 2)
 
 func on_active(): 
 	super()
@@ -79,7 +74,7 @@ func try_spawn() -> void:
 			pending_spawn = false 
 
 func create_ball() -> Ball: 	
-	var created_ball = BallFactory.create_from_config(create_ball_config)
+	var created_ball = BallFactory.create_from_config(created_ball_config)
 	var spawn_pos = spawn_ray.to_global(spawn_ray.target_position)
 	
 	ball.add_child(created_ball)
@@ -91,6 +86,8 @@ func create_ball() -> Ball:
 	var clone_die = func():
 		clones.erase(created_ball)
 	
+	created_ball.ability_system.add_ability(IgnoreBall.new(clones))
+
 	clones.append(created_ball)
 	created_ball.i_die.connect(clone_die)
 	
@@ -106,6 +103,6 @@ func get_copy() -> Ability:
 	
 	copy.clones = clones.duplicate()
 	copy.spawn_ray = spawn_ray.duplicate()
-	copy.create_ball_config = create_ball_config
+	copy.created_ball_config = created_ball_config
 	
 	return copy

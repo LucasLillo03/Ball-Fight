@@ -1,12 +1,9 @@
 class_name Ball
 extends RigidBody2D
 
-@export var radius: float = 32.0
-@export var color: Color
-@export var life: int = 100
-@export var damage: int
 @export var ball_name := "SIMPLE BALL"
-@export var max_speed : float
+
+var stats : BallStats = BallStats.new()
 
 @export_range(8, 128, 1) var segments: int = 32
 @onready var poly: Polygon2D = $Polygon2D
@@ -23,7 +20,6 @@ var ability_system: AbilitySystem
 var movement_locked := false 
 var gravity_locked := false
 
-signal radius_changed
 signal damage_blocked
 signal i_die
 
@@ -32,6 +28,9 @@ func _init() -> void:
 	ability_system = AbilitySystem.new()
 	ability_system.setup(self)
 
+	stats.color_changed.connect(on_color_changed)
+	stats.radius_changed.connect(on_radius_changed)
+
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
 	self.color = color
@@ -39,43 +38,6 @@ func setting(color : Color, radius : float, damage : int, life : int, clamp_spee
 	self.damage = damage
 	self.life = life
 	self.clamp_speed_behavior = clamp_speed
-
-func rand_stats() -> void:
-	randomize()
-	
-	radius = rand_radius()
-	
-	damage = randi_range(1, 10)
-	
-	color = Color(randf(),randf(),randf())
-	
-	_update_stats()
-
-func rand_radius() -> float: 
-	return randf_range(Constants.MIN_INITIAL_RADIUS, Constants.MAX_INITIAL_RADIUS)
-
-func rand_damage() -> int: 
-	return randi_range(Constants.MIN_BASE_DAMAGE, Constants.MAX_BASE_DAMAGE)
-
-func _update_stats():
-	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
-	var radius_to_percentage = func(x : float) -> float : return (1 + ((x - Constants.MIN_INITIAL_RADIUS) * 99) / (100 - Constants.MAX_INITIAL_RADIUS)) 
-	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)
-	var percentage_to_life = func(x : float) -> int: return floor(Constants.MIN_INITIAL_LIFE + ( (x-1) * (Constants.MAX_INITIAL_LIFE - Constants.MIN_INITIAL_LIFE) ) / 99)
-	#(1.0, 100.0) -> (MIN_INITIAL_VELOCITY, MAX_INITIAL_VELOCITY)
-	var percentage_to_speed = func(x : float) -> float: 
-		var accumulated_initial_velocity = (Constants.MAX_INITIAL_VELOCITY + Constants.MIN_INITIAL_VELOCITY)
-		var percentage_relation = (x-1) * (Constants.MAX_INITIAL_VELOCITY - Constants.MIN_INITIAL_VELOCITY)
-		return accumulated_initial_velocity - (Constants.MIN_INITIAL_VELOCITY + percentage_relation / 99)
-	 
-	var transformed_radius : float = radius_to_percentage.call(radius)
-	
-	life = percentage_to_life.call(transformed_radius)
-	
-	max_speed = percentage_to_speed.call(transformed_radius)
-	
-	if clamp_speed_behavior: clamp_speed_behavior.set_max_speed(max_speed)
-
 
 func _ready() -> void:
 	add_child(bound_sound_player)
@@ -88,7 +50,7 @@ func _ready() -> void:
 	
 	z_index = 1
 	
-	_update_stats()
+	stats.update_stats()
 
 #initialize characteristics 
 func initialization() -> void:
@@ -116,7 +78,7 @@ func _process(delta: float) -> void:
 
 #manages dead conditions
 func is_dead() -> bool: 
-	return life <= 0
+	return stats.life <= 0
 
 #manages dead actions
 func die() -> void: 
@@ -143,11 +105,12 @@ func _on_body_entered(body: Node) -> void:
 
 func take_damage(damage_context : DamageContext):
 	ability_system.abilities_take_damage(damage_context)
+	if damage_context.cancelled: return 
 	
-	life -= damage_context.amount
+	stats.life -= damage_context.amount
 
 func get_damage() -> int: 
-	var amount := damage
+	var amount := stats.damage
 	var damage_context = DamageContext.new()
 	
 	damage_context.amount = amount
@@ -158,32 +121,31 @@ func get_ball_name() -> String:
 	return ball_name
 
 func get_properties() -> String:
-	return str("Life: " , max(0, life), "\nDamage: ", damage , ability_system.abilities_properties())
-
+	return str("Life: " , max(0, stats.life), "\nDamage: ", stats.damage , ability_system.abilities_properties())
 
 
 #region set form
+func on_radius_changed() -> void:
+	if is_instance_valid(poly):
+		update_visual()
+		_update_collision()
+
+func on_color_changed() -> void: 
+	if is_instance_valid(poly):
+		poly.color = stats.color
+
 func update_visual() -> void:
 	var pts: PackedVector2Array = PackedVector2Array()
 	for i in range(segments):
 		var a := TAU * float(i) / float(segments)
-		pts.append(Vector2(cos(a), sin(a)) * radius)
+		pts.append(Vector2(cos(a), sin(a)) * stats.radius)
 	poly.polygon = pts
-	poly.color = color
+	poly.color = stats.color
 
 func _update_collision() -> void:
 	var shape := CircleShape2D.new()
-	shape.radius = radius
+	shape.radius = stats.radius
 	collision.shape = shape
-
-func set_color(new_color: Color) -> void:
-	color = new_color
-	if is_instance_valid(poly):
-		poly.color = color
-
-func set_radius(radius : float) -> void:
-	self.radius = radius
-	_update_stats()
 #endregion
 
 func get_config() -> BallConfig: 
@@ -194,20 +156,18 @@ func get_config() -> BallConfig:
 	for ability in ability_system.abilities: 
 		config.abilities.append(ability.get_copy())
 	
-	config.radius = radius
 	config.speed_behavior = clamp_speed_behavior.get_copy() #TODO must be implemented
-	config.color = color 
-	config.damage = damage
+
+	config.stats = stats
 	
 	return config
 
 func set_config(config : BallConfig) -> void: 
 	clamp_speed_behavior = config.speed_behavior
-	damage = config.damage
-	set_color(config.color)
-	set_radius(config.radius)
+	stats = config.stats
 	
+	#is iterated by item because the method add_ability initializes correctly each ability  
 	for ability in config.abilities: 
-		ability_system.add_ability(ability)
+		ability_system.add_ability(ability) 
 	
 	ball_name = config.ball_name

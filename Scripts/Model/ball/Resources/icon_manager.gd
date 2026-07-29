@@ -12,7 +12,7 @@ func _ready() -> void:
 
 	icon.visible = false
 
-	ball.radius_changed.connect(update_icon_scale)
+	ball.stats.radius_changed.connect(update_icon_scale)
 
 func _process(delta: float) -> void:
 
@@ -32,7 +32,7 @@ func update_icon_scale() -> void:
 
 	var texture_size = icon.texture.get_size()
 
-	var target_size = ball.radius * 2 * icon_ratio
+	var target_size = ball.stats.radius * 2 * icon_ratio
 
 	var scale_factor = target_size / max(
 		texture_size.x,

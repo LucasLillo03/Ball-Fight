@@ -15,6 +15,14 @@ const MAX_INITIAL_VELOCITY := 1000.0
 const MIN_BASE_DAMAGE := 1
 const MAX_BASE_DAMAGE := 10
 
+const DEFAULT_STATS := {
+	"radius": 30.0,
+	"damage": 5,
+	"life": 100,
+	"max_speed": 750.0,
+	"color": Color(1, 1, 1)
+}
+#tags used by the abilities
 enum TAG { 
 	DAMAGE_BROCKER,
 	BALL_CREATOR

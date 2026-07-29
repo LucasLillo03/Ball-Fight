@@ -21,13 +21,13 @@ func set_ball_A(ball : Ball) -> void:
 	ballA = ball
 	
 	ballA_name.text = "Ball 1"
-	ballA_name.label_settings.font_color = ball.color
+	ballA_name.label_settings.font_color = ball.stats.color
 
 func set_ball_B(ball : Ball) -> void:
 	ballB = ball
 
 	ballB_name.text = "Ball 2"
-	ballB_name.label_settings.font_color = ball.color
+	ballB_name.label_settings.font_color = ball.stats.color
 
 func game_over() -> void: 
 	game_over_ui.visible = true
