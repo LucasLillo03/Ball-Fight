@@ -47,6 +47,5 @@ func spawn_ballB(ball : Ball) -> void:
 
 	
 func _game_over() -> void:
-	for ball : Ball in balls_arr: 
-		ball.game_over_actions()
+	GameState.game_over.emit()
 	battle_ui.game_over()

@@ -1,11 +1,11 @@
 class_name SelectBState
 extends State
 
-var ball : Ball
+var ball_config : BallConfig
 
 func start():
 	parent.title.text = "Select Ball 2"
-	ball = BallFactory.create_default()
+	ball_config = BallFactory.create_rand_config()
 
 
 func back() -> void: 
@@ -13,11 +13,11 @@ func back() -> void:
 
 func confirm() -> void:
 	for ability in parent.selected_abilities: 
-		ball.add_ability(ability.new())
+		ball_config.add_ability(ability.new())
 	
 	for button in parent.ability_buttons: 
 		button.button_pressed = false
 	
-	parent.ballB = ball
+	parent.ball_B_config = ball_config
 
 	parent.finalize_selection()

@@ -10,6 +10,9 @@ extends CanvasLayer
 var ballA : Ball
 var ballB : Ball
 
+func _init() -> void:
+	GameState.game_over.connect(game_over)
+
 func _process(delta: float) -> void:
 	if ballA: ballA_properties.text = ballA.get_properties()
 	if ballB: ballB_properties.text = ballB.get_properties()

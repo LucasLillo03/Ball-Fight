@@ -7,3 +7,6 @@ var speed_behavior : ClampSpeedBehavior
 var radius : float
 var color : Color
 var damage : int
+
+func add_ability(ability : Ability):
+	abilities.append(ability)

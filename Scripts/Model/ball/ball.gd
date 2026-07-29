@@ -2,13 +2,13 @@ class_name Ball
 extends RigidBody2D
 
 @export var radius: float = 32.0
-@export_range(8, 128, 1) var segments: int = 32
 @export var color: Color
 @export var life: int = 100
 @export var damage: int
 @export var ball_name := "SIMPLE BALL"
 @export var max_speed : float
 
+@export_range(8, 128, 1) var segments: int = 32
 @onready var poly: Polygon2D = $Polygon2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var icon_manager := $IconManager
@@ -16,9 +16,9 @@ extends RigidBody2D
 var bound_sound_player : AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 
 var clamp_speed_behavior : ClampSpeedBehavior
-var abilities : Array[Ability]
-var updating_abilities : Array[Ability] #array de habilidades que requieren update
 var scenery : Map
+
+var ability_system: AbilitySystem
 
 var movement_locked := false 
 var gravity_locked := false
@@ -26,7 +26,11 @@ var gravity_locked := false
 signal radius_changed
 signal damage_blocked
 signal i_die
-signal game_over
+
+func _init() -> void:
+	GameState.game_over.connect(game_over_actions)
+	ability_system = AbilitySystem.new()
+	ability_system.setup(self)
 
 #set the attributes of a new ball
 func setting(color : Color, radius : float, damage : int, life : int, clamp_speed : ClampSpeedBehavior) -> void: 
@@ -71,14 +75,7 @@ func _update_stats():
 	max_speed = percentage_to_speed.call(transformed_radius)
 	
 	if clamp_speed_behavior: clamp_speed_behavior.set_max_speed(max_speed)
-	
-func add_ability(ability : Ability):
-	abilities.append(ability)
-	
-	ability.setup(self)
-	
-	if ability.requires_update:
-		updating_abilities.append(ability)
+
 
 func _ready() -> void:
 	add_child(bound_sound_player)
@@ -86,7 +83,7 @@ func _ready() -> void:
 	
 	initialization()
 	
-	for ability in abilities: 
+	for ability in ability_system.abilities: 
 		ability.on_ready()
 	
 	z_index = 1
@@ -103,8 +100,7 @@ func initialization() -> void:
 	body_entered.connect(_on_body_entered)
 	
 func _physics_process(delta: float) -> void:
-	for ability in updating_abilities:
-		ability.on_update(delta)
+	ability_system.update_abilities(delta)
 	
 	if movement_locked:
 		linear_velocity = Vector2.ZERO
@@ -130,11 +126,7 @@ func die() -> void:
 
 #executes the actions when the game ends
 func game_over_actions() -> void: 
-	game_over.emit()
 	freeze = true
-	
-	for ability in abilities: 
-		ability.can_activate = false 
 
 func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("ball"):
@@ -150,10 +142,7 @@ func _on_body_entered(body: Node) -> void:
 	linear_velocity = Vector2.ZERO if movement_locked else clamp_speed_behavior.clamp_speed(linear_velocity)
 
 func take_damage(damage_context : DamageContext):
-	for ability in abilities:
-		ability.on_take_damage(damage_context)
-		
-		if damage_context.cancelled: return 
+	ability_system.abilities_take_damage(damage_context)
 	
 	life -= damage_context.amount
 
@@ -162,27 +151,16 @@ func get_damage() -> int:
 	var damage_context = DamageContext.new()
 	
 	damage_context.amount = amount
-	
-	for ability in abilities:
-		amount = ability.get_damage(damage_context) 
 		
-		if damage_context.cancelled: return 0
-		
-	return amount
+	return ability_system.abilities_get_damage(amount, damage_context)
 
 func get_ball_name() -> String: 
 	return ball_name
 
 func get_properties() -> String:
-	return str("Life: " , max(0, life), "\nDamage: ", damage , abilities_properties())
+	return str("Life: " , max(0, life), "\nDamage: ", damage , ability_system.abilities_properties())
 
-func abilities_properties() -> String: 
-	var result := ""
-	
-	for ability in abilities: 
-		result = result + "\n" + ability.get_property()
-	
-	return result
+
 
 #region set form
 func update_visual() -> void:
@@ -213,7 +191,7 @@ func get_config() -> BallConfig:
 	
 	config.ball_name = ball_name
 	
-	for ability in abilities: 
+	for ability in ability_system.abilities: 
 		config.abilities.append(ability.get_copy())
 	
 	config.radius = radius
@@ -230,6 +208,6 @@ func set_config(config : BallConfig) -> void:
 	set_radius(config.radius)
 	
 	for ability in config.abilities: 
-		add_ability(ability)
+		ability_system.add_ability(ability)
 	
 	ball_name = config.ball_name

@@ -5,8 +5,8 @@ extends Control
 @onready var title = $VBoxContainer/Label
 
 var state_machine : SelectorStateMachine
-var ballA : Ball
-var ballB: Ball
+var ball_A_config : BallConfig
+var ball_B_config: BallConfig
 
 var ability_buttons : Array[Button]
 var selected_abilities := []
@@ -36,10 +36,16 @@ func _ready() -> void:
 
 func finalize_selection() -> void: 
 	var map_scene = preload("res://Scenes/Map.tscn")
-	var map = map_scene.instantiate()
+	# var map = map_scene.instantiate()
 
-	GameState.ball_a_scene = ballA
-	GameState.ball_b_scene = ballB
+	var ball_A := BallFactory.create_default_ball()
+	var ball_B := BallFactory.create_default_ball()
+
+	ball_A.set_config(ball_A_config)
+	ball_B.set_config(ball_B_config)
+
+	GameState.ball_a_scene = ball_A
+	GameState.ball_b_scene = ball_B
 		
 	get_tree().change_scene_to_packed(map_scene) 
 

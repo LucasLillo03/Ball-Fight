@@ -49,9 +49,9 @@ func _on_ball_asigned() -> void:
 	
 	
 	ball.add_child(spawn_ray)
-	ball.game_over.connect(clones_game_over)
+	GameState.game_over.connect(clones_game_over)
 	ball.i_die.connect(the_queen_is_dead)
-	ball.add_ability(IgnoreBall.new(clones))
+	ball.ability_system.add_ability(IgnoreBall.new(clones))
 	
 	create_ball_config = rand_ball_config()
 
