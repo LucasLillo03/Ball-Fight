@@ -5,19 +5,26 @@ var radius: float:
 	set(value):
 		radius = value
 		update_stats()
-		radius_changed.emit()
+		radius_changed.emit(value)
 
 var damage : int
 var color : Color:
 	set(value):
 		color = value
-		color_changed.emit()
-var life : int 
+		color_changed.emit(value)
+var life : int: 
+	set(value): 
+		life = value 
+		life_changed.emit(value)
+		if (value <= 0): 
+			dead.emit()
 var max_speed : float
 # var clamp_speed_behavior : ClampSpeedBehavior
 
-signal radius_changed
-signal color_changed
+signal radius_changed(radius : float)
+signal color_changed(color : Color)
+signal life_changed(life : int)
+signal dead()
 
 func default_values() -> void: 
 	radius = Constants.DEFAULT_STATS.radius
@@ -44,6 +51,8 @@ func rand_damage() -> int:
 	return randi_range(Constants.MIN_BASE_DAMAGE, Constants.MAX_BASE_DAMAGE)
 
 func update_stats():
+	if radius <= 0.0:
+		return
 	#(MIN_INITIAL_RADIUS, MAX_INITIAL_RADIUS) -> (1.0, 100.0)
 	var radius_to_percentage = func(x : float) -> float : return (1 + ((x - Constants.MIN_INITIAL_RADIUS) * 99) / (100 - Constants.MAX_INITIAL_RADIUS)) 
 	#(1.0, 100.0) -> (MIN_INITIAL_LIFE, MAX_INITIAL_LIFE)

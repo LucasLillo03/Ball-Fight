@@ -25,6 +25,8 @@ func spawn_ballA(ball : Ball) -> void:
 	ballA.i_die.connect(_game_over)	
 	
 	add_child(ballA)
+
+	print("[Map] ", ballA.name, " pos=", ballA.global_position, " viewport=", get_viewport().get_visible_rect())
 	
 	balls_arr.append(ballA)
 	
@@ -40,6 +42,7 @@ func spawn_ballB(ball : Ball) -> void:
 	ballB.i_die.connect(_game_over)	
 	
 	add_child(ballB)
+	print("[Map] ", ballB.name, " pos=", ballB.global_position, " viewport=", get_viewport().get_visible_rect())
 	
 	balls_arr.append(ballB)
 	

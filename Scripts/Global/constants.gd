@@ -1,4 +1,4 @@
-extends RefCounted
+extends Node
 
 const BOUND_SOUND = preload("res://Assets/Sounds/ball_sound.wav")
 const BOOST_FACTOR := 1.50 
